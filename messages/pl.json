@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Strona główna",
+    "menu": "Menu",
+    "catering": "Catering",
+    "giftCards": "Karty podarunkowe",
+    "about": "O nas",
+    "contact": "Kontakt"
+  },
+  "common": {
+    "reserve": "Zarezerwuj stolik",
+    "reserveShort": "Rezerwuj",
+    "orderNow": "Zamów",
+    "order": "Zamów online",
+    "viewMenu": "Zobacz menu",
+    "viewFullMenu": "Pełne menu",
+    "openMenu": "Otwórz menu",
+    "orderGiftCard": "Kup kartę",
+    "aboutUs": "O nas",
+    "menu": "Otwórz menu",
+    "close": "Zamknij",
+    "excellent": "Znakomicie",
+    "basedOn": "Na podstawie {count, number} opinii",
+    "exploreServices": "Nasze usługi",
+    "requestCatering": "Zamów catering",
+    "leaveReview": "Zostaw nam opinię!",
+    "getDirections": "Wyznacz trasę",
+    "callUs": "Zadzwoń"
+  },
+  "locations": {
+    "reserveTitle": "Zarezerwuj stolik",
+    "orderTitle": "Zamów online",
+    "reserveCta": "Rezerwuj w OpenTable",
+    "orderCta": "Zamów w Toast",
+    "chooseLocation": "Wybierz najbliższą lokalizację.",
+    "hoursShort": "Wt–Pt 16–22 · Sb–Nd 12–22 · Pn nieczynne",
+    "hours": "Godziny otwarcia",
+    "close": "Zamknij",
+    "visitKicker": "Odwiedź nas",
+    "visitTitle": "Dwa domy w środkowej Florydzie"
+  },
+  "hours": {
+    "title": "Godziny",
+    "rows": [
+      ["Wt – Pt", "16:00 – 22:00"],
+      ["Sb – Nd", "12:00 – 22:00"],
+      ["Poniedziałek", "Nieczynne"]
+    ]
+  },
+  "contact": {
+    "name": "Imię",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "phoneOptional": "Telefon (opcjonalnie)",
+    "subject": "Temat",
+    "message": "Wiadomość",
+    "send": "Wyślij wiadomość",
+    "sending": "Wysyłanie…",
+    "success": "Dziękujemy — wkrótce się odezwiemy.",
+    "error": "Coś poszło nie tak. Zadzwoń do nas lub spróbuj ponownie.",
+    "namePlaceholder": "Twoje imię",
+    "emailPlaceholder": "you@example.com",
+    "messagePlaceholder": "Jak możemy pomóc?",
+    "emailUs": "Napisz do nas",
+    "writeUs": "Napisz do nas"
+  },
+  "footer": {
+    "blurb": "Autentyczna kuchnia indyjska w środkowej Florydzie od 1996 roku. Smaki, które zostają.",
+    "discover": "Odkryj",
+    "visit": "Odwiedź",
+    "actions": "Rezerwacje i zamówienia",
+    "hours": "Wt–Pt 16–22 · Sb–Nd 12–22 · Pn nieczynne",
+    "newsletter": "Newsletter",
+    "newsletterComing": "Wkrótce…",
+    "rights": "Wszelkie prawa zastrzeżone.",
+    "privacyPolicy": "Polityka prywatności",
+    "terms": "Regulamin",
+    "cookiePolicy": "Polityka cookie"
+  },
+  "sections": {
+    "services": "Usługi",
+    "eventFavorites": "Ulubione na imprezy",
+    "chooseGift": "Wybierz kartę podarunkową",
+    "planEventTitle": "Zaplanujmy Twoje wydarzenie",
+    "planEventText": "Podaj datę, liczbę gości i okazję — ułożymy menu specjalnie dla Ciebie.",
+    "reviews": "Opinie"
+  },
+  "legal": {
+    "lastUpdated": "Ostatnia aktualizacja",
+    "backHome": "Na stronę główną"
+  },
+  "notFound": {
+    "title": "Nie znaleziono strony",
+    "body": "Strona, której szukasz, została przeniesiona lub już nie istnieje.",
+    "cta": "Na stronę główną"
+  },
+  "meta": {
+    "home": {
+      "title": "Autentyczna kuchnia indyjska w środkowej Florydzie",
+      "description": "Od 1996 roku Amrit Palace serwuje autentyczną kuchnię indyjską w Ocali i Gainesville na Florydzie. Tandoor, aromatyczne curry, świeże pieczywo, autorskie koktajle. Zarezerwuj stolik lub zamów online."
+    },
+    "menu": {
+      "title": "Menu",
+      "description": "Pełne menu Amrit Palace — przystawki, tandoori, curry, biryani, dania wegetariańskie, świeże pieczywo, desery oraz bar z koktajlami, winem i piwem."
+    },
+    "catering": {
+      "title": "Catering",
+      "description": "Pełna obsługa cateringowa kuchni indyjskiej na wesela, imprezy firmowe i przyjęcia prywatne w środkowej Florydzie. Bufety, stacje na żywo i profesjonalna obsługa."
+    },
+    "giftCards": {
+      "title": "Karty podarunkowe",
+      "description": "Podaruj smak tradycji. Elektroniczne karty podarunkowe Amrit Palace od 25 do 200 USD — natychmiastowa dostawa, ważne 12 miesięcy w obu lokalizacjach."
+    },
+    "about": {
+      "title": "O nas",
+      "description": "Od naszej rodziny dla Twojej — ponad 30 lat celebrowania kuchni indyjskiej. Historia Amrit Palace, założonego w 1996 roku."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "description": "Skontaktuj się z Amrit Palace. Dwie lokalizacje w środkowej Florydzie — Ocala i Gainesville: adresy, telefony, godziny i rezerwacje."
+    },
+    "privacy": {
+      "title": "Polityka prywatności",
+      "description": "Jak Amrit Palace zbiera, wykorzystuje i chroni Twoje dane osobowe."
+    },
+    "terms": {
+      "title": "Regulamin",
+      "description": "Zasady korzystania z witryny i usług Amrit Palace."
+    },
+    "cookies": {
+      "title": "Polityka cookie",
+      "description": "Jak Amrit Palace wykorzystuje pliki cookie i podobne technologie na tej stronie."
+    }
+  }
+}

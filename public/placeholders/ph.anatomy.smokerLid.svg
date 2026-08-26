@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 533" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8dccb"/>
+      <stop offset="1" stop-color="#d0c3ae"/>
+    </linearGradient>
+    <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+  <rect width="800" height="533" fill="url(#g)"/>
+  <rect width="800" height="533" filter="url(#n)" opacity="0.05"/>
+  <rect x="10" y="10" width="780" height="513" fill="none" stroke="#2c2c2c" stroke-opacity="0.12" stroke-width="1.5"/>
+  <rect x="10" y="10" width="46" height="4" fill="#c07f3d"/>
+  <path d="M 192 266.5 A 208 129.44285714285715 0 0 1 608 266.5 Z" stroke="#2c2c2c" stroke-opacity="0.2" stroke-width="2" fill="#cbbca7"/>
+      <rect x="360" y="234.52" width="80" height="21.32" rx="4" stroke="#2c2c2c" stroke-opacity="0.2" stroke-width="2" fill="#cbbca7"/>
+  <text x="400" y="260.5" fill="#2c2c2c" fill-opacity="0.6" font-family="Georgia,serif" font-size="26" font-weight="600" letter-spacing="2" text-anchor="middle">КРИШКА</text>
+  <text x="400" y="290.5" fill="#7a6f60" font-family="system-ui,sans-serif" font-size="14" text-anchor="middle">відкрита кришка · шар</text>
+  <text x="400" y="511" fill="#978e81" fill-opacity="0.8" font-family="system-ui,sans-serif" font-size="12" text-anchor="middle">ph.anatomy.smokerLid · 3/2</text>
+</svg>

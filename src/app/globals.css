@@ -1,0 +1,189 @@
+@import 'tailwindcss';
+
+/* ─────────────────────── Smoke O'Clock design tokens ───────────────────────
+   Editorial system carried over from the source template: warm parchment
+   canvas, a single saffron accent, whisper-weight display serif. Sharp geometry
+   (0px cards, 3px controls), hairline rules, NO shadows, NO second accent,
+   never pure black. The smoker brand adds fire/smoke photography + roast-dark
+   accent sections. */
+
+@theme {
+  /* Parchment — warm canvas + surfaces */
+  --color-parchment-50: #f1eae0;
+  --color-parchment-100: #e8dccb;
+  --color-parchment-200: #d8cbb8; /* base canvas */
+  --color-parchment-300: #cbbca7;
+  --color-linen: #bfb4a3;          /* elevated surface tone */
+  --color-stone: #b6ab9c;          /* 1px hairline borders */
+
+  /* Onyx / roast — text + dark sections (never pure black) */
+  --color-onyx: #2c2c2c;           /* primary text + headings */
+  --color-roast-900: #211e1b;
+  --color-roast-800: #292622;      /* dark accent sections / footer */
+  --color-roast-700: #35302a;
+  --color-espresso: #615b53;       /* secondary body text */
+  --color-walnut: #978e81;         /* muted helper text */
+
+  /* Saffron — the sole chromatic accent */
+  --color-saffron-300: #e5bb87;
+  --color-saffron-400: #dca86a;
+  --color-saffron-500: #d49653;    /* base accent */
+  --color-saffron-600: #c07f3d;
+
+  /* ── Compatibility aliases ──────────────────────────────────────────
+     Scenes/components authored against the earlier dark palette keep working;
+     these map the dark-system names onto the editorial palette (inverted:
+     "coal" surfaces → parchment, "smoke" text → onyx, "ember" → saffron,
+     "paper" inverted sections → roast-dark accents). */
+  --color-coal-950: #d8cbb8; /* page bg → parchment */
+  --color-coal-900: #e8dccb;
+  --color-coal-800: #f1eae0; /* cards → light */
+  --color-coal-700: #cbbca7;
+  --color-smoke-50: #2c2c2c;  /* primary text → onyx */
+  --color-smoke-300: #615b53; /* secondary → espresso */
+  --color-ash-500: #978e81;   /* muted → walnut */
+  --color-ember-400: #dca86a;
+  --color-ember-500: #d49653;
+  --color-ember-600: #c07f3d;
+  --color-paper-200: #f1eae0; /* light cream (frames, soft panels) */
+  --color-paper-300: #e8dccb;
+  --color-success: #5f7a52;
+
+  --font-display: var(--font-display-stack);
+  --font-body: var(--font-body-stack);
+  --font-mono: var(--font-body-stack);
+
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-fade-up: fade-up 0.9s var(--ease-editorial) both;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes ember-pulse {
+    0%, 100% { transform: scale(1); opacity: 0.9; }
+    50% { transform: scale(1.15); opacity: 1; }
+  }
+}
+
+:root {
+  --font-display-stack: var(--font-playfair), 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body-stack: var(--font-manrope), system-ui, sans-serif;
+  --header-h: 4.5rem;
+}
+
+@media (min-width: 1024px) {
+  :root { --header-h: 5rem; }
+}
+
+@media (max-width: 639px) {
+  input, select, textarea { font-size: 16px; }
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Lenis smooth scroll */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+body {
+  background-color: var(--color-parchment-200);
+  color: var(--color-onyx);
+  font-family: var(--font-body-stack);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: rgb(212 150 83 / 0.28);
+  color: var(--color-onyx);
+}
+
+/* ── Editorial utilities ───────────────────────────────────────────── */
+
+/* Whisper-weight display heading: light serif, uppercased. */
+.display {
+  font-family: var(--font-display-stack);
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 0.94;
+}
+/* No-op: the earlier "struck into metal" shadow is dropped in the editorial look. */
+.struck {}
+/* No-op: no CTA glow in the editorial look. */
+.cta-glow {}
+
+/* Saffron eyebrow / kicker above a section title. */
+.kicker {
+  font-family: var(--font-body-stack);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.26em;
+  font-size: 0.72rem;
+  color: var(--color-saffron-600);
+}
+
+/* Small editorial data label (specs, prices, counters). */
+.spec {
+  font-family: var(--font-body-stack);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+}
+
+.tnum { font-variant-numeric: tabular-nums lining-nums; }
+
+/* 1px editorial hairlines. */
+.hairline { border-color: var(--color-stone); }
+.hairline-strong { border-color: var(--color-walnut); }
+.hairline-paper { border-color: rgb(44 44 44 / 0.18); }
+
+/* Subtle printed-paper grain — scoped overlay (parent must be relative). */
+.grain::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Slow pulse of the hero forge glow (used via animate-[forge-breathe_…]). */
+@keyframes forge-breathe {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-saffron-500);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+h1, h2, h3 { text-wrap: balance; }

@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Domů",
+    "menu": "Menu",
+    "catering": "Catering",
+    "giftCards": "Dárkové karty",
+    "about": "O nás",
+    "contact": "Kontakt"
+  },
+  "common": {
+    "reserve": "Rezervovat stůl",
+    "reserveShort": "Rezervovat",
+    "orderNow": "Objednat",
+    "order": "Objednat online",
+    "viewMenu": "Zobrazit menu",
+    "viewFullMenu": "Celé menu",
+    "openMenu": "Otevřít menu",
+    "orderGiftCard": "Koupit kartu",
+    "aboutUs": "O nás",
+    "menu": "Otevřít menu",
+    "close": "Zavřít",
+    "excellent": "Výborně",
+    "basedOn": "Na základě {count, number} recenzí",
+    "exploreServices": "Naše služby",
+    "requestCatering": "Poptat catering",
+    "leaveReview": "Zanechte nám recenzi!",
+    "getDirections": "Najít cestu",
+    "callUs": "Zavolejte nám"
+  },
+  "locations": {
+    "reserveTitle": "Rezervovat stůl",
+    "orderTitle": "Objednat online",
+    "reserveCta": "Rezervovat na OpenTable",
+    "orderCta": "Objednat na Toast",
+    "chooseLocation": "Vyberte nejbližší pobočku.",
+    "hoursShort": "Út–Pá 16–22 · So–Ne 12–22 · Po zavřeno",
+    "hours": "Otevírací doba",
+    "close": "Zavřít",
+    "visitKicker": "Navštivte nás",
+    "visitTitle": "Dva domovy na střední Floridě"
+  },
+  "hours": {
+    "title": "Otevírací doba",
+    "rows": [
+      ["Út – Pá", "16:00 – 22:00"],
+      ["So – Ne", "12:00 – 22:00"],
+      ["Pondělí", "Zavřeno"]
+    ]
+  },
+  "contact": {
+    "name": "Jméno",
+    "email": "E-mail",
+    "phone": "Telefon",
+    "phoneOptional": "Telefon (nepovinné)",
+    "subject": "Předmět",
+    "message": "Zpráva",
+    "send": "Odeslat zprávu",
+    "sending": "Odesílání…",
+    "success": "Děkujeme — brzy se vám ozveme.",
+    "error": "Něco se pokazilo. Zavolejte nám nebo to zkuste znovu.",
+    "namePlaceholder": "Vaše jméno",
+    "emailPlaceholder": "you@example.com",
+    "messagePlaceholder": "Jak vám můžeme pomoci?",
+    "emailUs": "Napište nám",
+    "writeUs": "Napište nám"
+  },
+  "footer": {
+    "blurb": "Autentická indická kuchyně na střední Floridě od roku 1996. Chutě, které zůstávají.",
+    "discover": "Objevujte",
+    "visit": "Navštivte",
+    "actions": "Rezervace a objednávky",
+    "hours": "Út–Pá 16–22 · So–Ne 12–22 · Po zavřeno",
+    "newsletter": "Newsletter",
+    "newsletterComing": "Již brzy…",
+    "rights": "Všechna práva vyhrazena.",
+    "privacyPolicy": "Zásady ochrany soukromí",
+    "terms": "Obchodní podmínky",
+    "cookiePolicy": "Zásady cookies"
+  },
+  "sections": {
+    "services": "Služby",
+    "eventFavorites": "Oblíbené na akce",
+    "chooseGift": "Vyberte dárkovou kartu",
+    "planEventTitle": "Naplánujme vaši akci",
+    "planEventText": "Řekněte nám datum, počet hostů a příležitost — sestavíme menu na míru.",
+    "reviews": "Recenze"
+  },
+  "legal": {
+    "lastUpdated": "Poslední aktualizace",
+    "backHome": "Zpět na domovskou stránku"
+  },
+  "notFound": {
+    "title": "Stránka nenalezena",
+    "body": "Stránka, kterou hledáte, byla přesunuta nebo již neexistuje.",
+    "cta": "Zpět na domovskou stránku"
+  },
+  "meta": {
+    "home": {
+      "title": "Autentická indická kuchyně na střední Floridě",
+      "description": "Od roku 1996 nabízí Amrit Palace autentickou indickou kuchyni v Ocale a Gainesville na Floridě. Tandoor, bohaté curry, čerstvý chléb, autorské koktejly. Rezervujte stůl nebo objednejte online."
+    },
+    "menu": {
+      "title": "Menu",
+      "description": "Kompletní menu Amrit Palace — předkrmy, tandoori, curry, biryani, vegetariánská jídla, čerstvý chléb, dezerty a bar s koktejly, vínem a pivem."
+    },
+    "catering": {
+      "title": "Catering",
+      "description": "Kompletní indický catering pro svatby, firemní akce a soukromé oslavy na střední Floridě. Bufety, živé stanice a profesionální obsluha."
+    },
+    "giftCards": {
+      "title": "Dárkové karty",
+      "description": "Darujte kus tradice. Elektronické dárkové karty Amrit Palace od 25 do 200 USD — okamžité doručení, platnost 12 měsíců na obou pobočkách."
+    },
+    "about": {
+      "title": "O nás",
+      "description": "Od naší rodiny té vaší — přes 30 let oslavy indické kuchyně. Příběh Amrit Palace, založeného v roce 1996."
+    },
+    "contact": {
+      "title": "Kontakt",
+      "description": "Spojte se s Amrit Palace. Dvě pobočky na střední Floridě — Ocala a Gainesville: adresy, telefony, otevírací doba a rezervace."
+    },
+    "privacy": {
+      "title": "Zásady ochrany soukromí",
+      "description": "Jak Amrit Palace shromažďuje, používá a chrání vaše osobní údaje."
+    },
+    "terms": {
+      "title": "Obchodní podmínky",
+      "description": "Podmínky používání webu a služeb Amrit Palace."
+    },
+    "cookies": {
+      "title": "Zásady cookies",
+      "description": "Jak Amrit Palace používá soubory cookie a podobné technologie na tomto webu."
+    }
+  }
+}

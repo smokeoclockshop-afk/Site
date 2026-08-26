@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "catering": "Catering",
+    "giftCards": "Gift Cards",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "common": {
+    "reserve": "Reserve a Table",
+    "reserveShort": "Reserve",
+    "orderNow": "Order Now",
+    "order": "Order Online",
+    "viewMenu": "View Menu",
+    "viewFullMenu": "View Full Menu",
+    "openMenu": "Open Menu",
+    "orderGiftCard": "Order Gift Card",
+    "aboutUs": "About Us",
+    "menu": "Open menu",
+    "close": "Close",
+    "excellent": "Excellent",
+    "basedOn": "Based on {count, number} reviews",
+    "exploreServices": "Explore Services",
+    "requestCatering": "Request Catering",
+    "leaveReview": "Be sure to leave us a review!",
+    "getDirections": "Get Directions",
+    "callUs": "Call Us"
+  },
+  "locations": {
+    "reserveTitle": "Reserve a Table",
+    "orderTitle": "Order Online",
+    "reserveCta": "Book on OpenTable",
+    "orderCta": "Order on Toast",
+    "chooseLocation": "Choose the location nearest you.",
+    "hoursShort": "Tue–Fri 4–10 PM · Sat–Sun 12–10 PM · Closed Mon",
+    "hours": "Opening hours",
+    "close": "Close",
+    "visitKicker": "Visit",
+    "visitTitle": "Two Central Florida Homes"
+  },
+  "hours": {
+    "title": "Hours",
+    "rows": [
+      ["Tue – Fri", "4 PM – 10 PM"],
+      ["Sat – Sun", "12 PM – 10 PM"],
+      ["Monday", "Closed"]
+    ]
+  },
+  "contact": {
+    "name": "Name",
+    "email": "Email",
+    "phone": "Phone",
+    "phoneOptional": "Phone (optional)",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending…",
+    "success": "Thank you — we'll be in touch shortly.",
+    "error": "Something went wrong. Please call us or try again.",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@example.com",
+    "messagePlaceholder": "How can we help?",
+    "emailUs": "E-mail Us",
+    "writeUs": "Write Us"
+  },
+  "footer": {
+    "blurb": "Authentic Indian cuisine, served across Central Florida since 1996. Flavors that stay.",
+    "discover": "Discover",
+    "visit": "Visit",
+    "actions": "Reservations & Orders",
+    "hours": "Tue–Fri 4–10 PM · Sat–Sun 12–10 PM · Closed Mon",
+    "newsletter": "Newsletter",
+    "newsletterComing": "Coming soon…",
+    "rights": "All Rights Reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "terms": "Terms & Conditions",
+    "cookiePolicy": "Cookie Policy"
+  },
+  "sections": {
+    "services": "Services",
+    "eventFavorites": "Event Favorites",
+    "chooseGift": "Choose Your E-Gift Card",
+    "planEventTitle": "Let's Plan Your Event",
+    "planEventText": "Tell us the date, the headcount, and the occasion — we'll shape a menu around it.",
+    "reviews": "Reviews"
+  },
+  "legal": {
+    "lastUpdated": "Last updated",
+    "backHome": "Back to home"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "body": "The page you're looking for has moved or no longer exists.",
+    "cta": "Back to home"
+  },
+  "meta": {
+    "home": {
+      "title": "Authentic Indian Cuisine in Central Florida",
+      "description": "Since 1996, Amrit Palace has served authentic Indian cuisine in Ocala & Gainesville, FL. Tandoor grills, rich curries, fresh breads, craft cocktails. Reserve a table or order online."
+    },
+    "menu": {
+      "title": "Menu",
+      "description": "Explore the full Amrit Palace menu — appetizers, tandoori, curries, biryani, vegetarian dishes, fresh breads, desserts, and a full bar of cocktails, wine, and beer."
+    },
+    "catering": {
+      "title": "Catering",
+      "description": "Full-service Indian catering for weddings, corporate events, and private celebrations across Central Florida. Buffet displays, live stations, and professional service."
+    },
+    "giftCards": {
+      "title": "Gift Cards",
+      "description": "Give a taste of tradition. Amrit Palace e-gift cards from $25 to $200 — delivered instantly, valid for 12 months at both Ocala and Gainesville locations."
+    },
+    "about": {
+      "title": "About",
+      "description": "From our family to yours — over 30 years of celebrating Indian cuisine with passion, authenticity, and heart. The story of Amrit Palace, founded 1996."
+    },
+    "contact": {
+      "title": "Contact",
+      "description": "Get in touch with Amrit Palace. Two Central Florida locations in Ocala and Gainesville — addresses, phone numbers, hours, and reservations."
+    },
+    "privacy": {
+      "title": "Privacy Policy",
+      "description": "How Amrit Palace collects, uses, and protects your personal information."
+    },
+    "terms": {
+      "title": "Terms & Conditions",
+      "description": "The terms governing your use of the Amrit Palace website and services."
+    },
+    "cookies": {
+      "title": "Cookie Policy",
+      "description": "How Amrit Palace uses cookies and similar technologies on this website."
+    }
+  }
+}
