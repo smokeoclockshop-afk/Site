@@ -37,17 +37,17 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      {/* Act I — Прогрів */}
+      {/* Act I — Прогрів: дим, страви й чесна математика одразу після відео */}
       <Scene01Hero data={home.hero} />
       <Scene02Showcase data={home.showcase} />
-      <Scene03Features data={home.features} />
       <SceneDishes data={home.dishes} />
+      <Scene08Economics data={home.economics} />
+      <Scene03Features data={home.features} />
 
       {/* Act II — Пропозиція */}
       <Scene05Process data={home.process} />
       <Scene04Ladder data={home.ladder} />
       <Scene06Queue data={home.queue} />
-      <Scene08Economics data={home.economics} />
 
       {/* Act III — Дія */}
       <Scene09Quiz data={home.quiz} />
