@@ -103,7 +103,7 @@
 - `domain`, `email`
 - `messengers` — Telegram / Viber / Instagram (реальні посилання)
 - `social` — Instagram, YouTube
-- `workshop` — адреса, місто, індекс, телефон (`phone` + `phoneHref`), координати `geo`
+- `workshop` — адреса, місто, індекс, координати `geo` (телефон уже реальний: +380 66 347 12 37, і Viber на нього ж)
 - `charityPercent` — % на ЗСУ (зараз 5)
 - `queue` — `built` (зварено), `inProgress` (№ у роботі), `freeSlots`, `window` (місяць)
 - `founder` — ім’я майстра для сторінки та клейма
