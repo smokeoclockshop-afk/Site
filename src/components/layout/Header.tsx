@@ -110,7 +110,7 @@ export function Header() {
                   key={key}
                   href={href}
                   aria-current={active ? 'page' : undefined}
-                  className={cn('relative text-sm transition-colors', halo, linkColor, active && (dark ? 'text-parchment-50' : 'text-onyx'))}
+                  className={cn('relative text-[15px] font-semibold transition-colors', halo, linkColor, active && (dark ? 'text-parchment-50' : 'text-onyx'))}
                 >
                   {t(key)}
                   {active && <span aria-hidden className="absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-saffron-500" />}
@@ -123,7 +123,7 @@ export function Header() {
             <a
               href={`tel:${site.workshop.phoneHref}`}
               dir="ltr"
-              className={cn('spec hidden whitespace-nowrap transition-colors md:block', halo, linkColor)}
+              className={cn('spec hidden whitespace-nowrap text-[0.9rem]! font-bold! transition-colors md:block', halo, linkColor)}
             >
               {site.workshop.phone}
             </a>
