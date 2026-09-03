@@ -57,6 +57,19 @@ interface Lead {
 
 const RULE = '––––––––––––––––––––';
 
+/** Kyiv local time, tolerant of runtimes whose ICU lacks the newer zone name. */
+function kyivStamp(): string {
+  const now = new Date();
+  for (const timeZone of ['Europe/Kyiv', 'Europe/Kiev']) {
+    try {
+      return now.toLocaleString('uk-UA', { timeZone, dateStyle: 'short', timeStyle: 'short' });
+    } catch {
+      /* try the next zone name */
+    }
+  }
+  return now.toISOString().slice(0, 16).replace('T', ' ') + ' UTC';
+}
+
 function formatMessage(lead: Lead): string {
   const b2b = lead.source === 'b2b';
   const quiz = lead.answers.length > 0;
@@ -78,8 +91,8 @@ function formatMessage(lead: Lead): string {
     lead.answers.forEach((a, i) => what.push(`   ${i + 1}. ${esc(a)}`));
   }
 
-  const stamp = new Date().toLocaleString('uk-UA', { timeZone: 'Europe/Kyiv', dateStyle: 'short', timeStyle: 'short' });
   const from = [`📍 Звідки: ${esc(sourceLabel(lead.source))}`];
+  const stamp = kyivStamp();
   if (lead.page) from.push(`🔗 Сторінка: <code>${esc(lead.page)}</code>`);
   from.push(`${lead.device === 'телефон' ? '📱' : '💻'} ${lead.device} · 🕒 ${stamp}`);
 
@@ -200,11 +213,12 @@ export async function POST(req: Request) {
     const sent = await sendToTelegram(formatMessage(lead));
     if (!sent.ok) {
       console.error('[lead] delivery failed:', sent.error, lead);
-      return NextResponse.json({ ok: false, error: 'Delivery failed' }, { status: 502 });
+      return NextResponse.json({ ok: false, error: 'Delivery failed', detail: sent.error }, { status: 502 });
     }
     return NextResponse.json({ ok: true });
   } catch (err) {
+    const e = err as Error & { cause?: { code?: string; message?: string } };
     console.error('[lead] delivery error:', err, lead);
-    return NextResponse.json({ ok: false, error: 'Delivery failed' }, { status: 502 });
+    return NextResponse.json({ ok: false, error: 'Delivery failed', detail: `${e.name}: ${e.message}${e.cause?.code ? ` (${e.cause.code})` : ''}` }, { status: 502 });
   }
 }
