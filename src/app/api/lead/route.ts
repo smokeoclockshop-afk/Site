@@ -121,18 +121,34 @@ function pageFromReferer(req: Request): string {
  * any similarly named variables (to catch typos), plus the Netlify site and
  * deploy context this code is running in.
  */
-export async function GET() {
+export async function GET(req: Request) {
   const names = Object.keys(process.env);
   const similar = names.filter((n) => /TELEGRAM|TG_|BOT|CHAT/i.test(n) && n !== 'TELEGRAM_BOT_TOKEN' && n !== 'TELEGRAM_CHAT_ID');
+  const token = process.env.TELEGRAM_BOT_TOKEN ?? '';
+  const chatId = process.env.TELEGRAM_CHAT_ID ?? '';
+  // ?selftest=1 — ask Telegram (read-only getChat) from this very runtime,
+  // so a blocked network, a bad token or a wrong chat id shows up here.
+  let selftest: Record<string, unknown> | null = null;
+  if (new URL(req.url).searchParams.has('selftest') && token && chatId) {
+    try {
+      const r = await fetch(`https://api.telegram.org/bot${token}/getChat?chat_id=${encodeURIComponent(chatId)}`, { signal: AbortSignal.timeout(10_000) });
+      const body = (await r.json().catch(() => null)) as { ok?: boolean; description?: string; result?: { title?: string; type?: string } } | null;
+      selftest = { status: r.status, ok: body?.ok ?? null, description: body?.description ?? null, chatTitle: body?.result?.title ?? null, chatType: body?.result?.type ?? null };
+    } catch (err) {
+      const e = err as Error & { cause?: { code?: string; message?: string } };
+      selftest = { threw: e.name, message: e.message, cause: e.cause?.code ?? e.cause?.message ?? null };
+    }
+  }
   return NextResponse.json(
     {
-      telegramToken: Boolean(process.env.TELEGRAM_BOT_TOKEN),
-      telegramChatId: Boolean(process.env.TELEGRAM_CHAT_ID),
+      telegramToken: Boolean(token),
+      telegramChatId: Boolean(chatId),
+      tokenShape: token ? `${token.length} chars, ${/^\d+:[A-Za-z0-9_-]+$/.test(token) ? 'looks valid' : 'UNEXPECTED FORMAT'}` : null,
+      chatIdShape: chatId ? `${chatId.length} chars, ${/^-?\d+$/.test(chatId) ? 'numeric' : 'NOT NUMERIC'}` : null,
       similarNames: similar,
       site: process.env.SITE_NAME ?? null,
-      context: process.env.CONTEXT ?? null,
-      deployId: process.env.DEPLOY_ID ?? null,
-      nodeEnv: process.env.NODE_ENV,
+      nodeVersion: process.version,
+      selftest,
     },
     { headers: { 'Cache-Control': 'no-store' } },
   );
