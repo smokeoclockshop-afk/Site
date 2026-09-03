@@ -117,3 +117,12 @@
 - Посилання на рецепти (`home.recipes[].href`, `smoker.cooked[].href`) — зараз `#`
 
 **Аналітика (`.env`):** підключити GA4 / Meta Pixel (подія `track()` пише у `window.dataLayer`).
+
+## Заявки → Telegram
+
+Усі форми (модалка «Замовити», квіз, «Контакти», «Для бізнесу») шлють заявку в `/api/lead`,
+а він пересилає її в Telegram-групу «Smoke o'clock Заявки» через бота @smoke006_bot.
+Потрібні дві змінні оточення: `TELEGRAM_BOT_TOKEN` і `TELEGRAM_CHAT_ID` (див. `.env.example`).
+Локально вони лежать у `.env.local` (не в git). На Netlify їх треба додати в
+Site configuration → Environment variables і зробити redeploy, інакше форма на проді
+показує помилку «не вдалося відправити» (заявка не губиться мовчки).
