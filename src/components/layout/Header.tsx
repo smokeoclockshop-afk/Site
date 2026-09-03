@@ -79,8 +79,8 @@ export function Header() {
   const linkColor = dark
     ? 'text-parchment-50/90 hover:text-parchment-50'
     : 'text-espresso hover:text-saffron-600';
-  // Thin halo in the opposite colour so text stays legible over busy photos.
-  const halo = dark ? 'halo-on-dark' : 'halo-on-light';
+  // Crisp hairline outline in the opposite colour so text stays legible over busy photos.
+  const halo = dark ? 'edge-on-dark' : 'edge-on-light';
 
   return (
     <>
