@@ -116,6 +116,28 @@ function pageFromReferer(req: Request): string {
   }
 }
 
+/**
+ * Diagnostics (no secrets): which of the two variables the function can see,
+ * any similarly named variables (to catch typos), plus the Netlify site and
+ * deploy context this code is running in.
+ */
+export async function GET() {
+  const names = Object.keys(process.env);
+  const similar = names.filter((n) => /TELEGRAM|TG_|BOT|CHAT/i.test(n) && n !== 'TELEGRAM_BOT_TOKEN' && n !== 'TELEGRAM_CHAT_ID');
+  return NextResponse.json(
+    {
+      telegramToken: Boolean(process.env.TELEGRAM_BOT_TOKEN),
+      telegramChatId: Boolean(process.env.TELEGRAM_CHAT_ID),
+      similarNames: similar,
+      site: process.env.SITE_NAME ?? null,
+      context: process.env.CONTEXT ?? null,
+      deployId: process.env.DEPLOY_ID ?? null,
+      nodeEnv: process.env.NODE_ENV,
+    },
+    { headers: { 'Cache-Control': 'no-store' } },
+  );
+}
+
 export async function POST(req: Request) {
   let data: Record<string, unknown>;
   try {

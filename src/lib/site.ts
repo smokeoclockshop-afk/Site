@@ -26,8 +26,8 @@ export const site = {
   tagline: 'Час диму',
   category: 'Виробник', // GBP category
   priceRange: '₴₴₴',
-  domain: 'smokeoclock.ua', // TODO(owner): confirm domain
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://smokeoclock.ua',
+  domain: 'smoke-oclock.shop',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://smoke-oclock.shop',
   founded: 2024, // TODO(owner)
   founder: 'Майстер', // TODO(owner): real name for /maister + clip stamp
   email: 'hello@smokeoclock.ua', // TODO(owner)
