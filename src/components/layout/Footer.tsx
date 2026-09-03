@@ -48,7 +48,7 @@ export async function Footer() {
             <ul className="space-y-2.5 text-sm text-parchment-100/75">
               <li className="flex items-start gap-2.5">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-saffron-500" aria-hidden />
-                <span>{site.workshop.street}, {site.workshop.city}, {site.workshop.region}</span>
+                <span>{[site.workshop.street, site.workshop.city, site.workshop.region].filter(Boolean).join(', ')}</span>
               </li>
               <li className="flex items-center gap-2.5">
                 <Phone className="size-4 shrink-0 text-saffron-500" aria-hidden />

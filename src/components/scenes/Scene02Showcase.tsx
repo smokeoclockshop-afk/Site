@@ -23,6 +23,7 @@ export function Scene02Showcase({ data }: { data: Data }) {
   const [open, setOpen] = useState(false);
   const poster = getSlot('ph.showcase.poster');
   const video = getSlot('ph.showcase.video');
+  const film = getSlot('ph.showcase.film');
 
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
   const scale = useTransform(scrollYProgress, [0, 0.5], reduce ? [1, 1] : [0.82, 1]);
@@ -130,13 +131,12 @@ export function Scene02Showcase({ data }: { data: Data }) {
               </button>
               <video
                 autoPlay
-                loop
                 controls
                 playsInline
                 poster={poster.src}
                 className="aspect-video w-full rounded-[6px] bg-black object-cover"
               >
-                {video.videoSrc && <source src={video.videoSrc} type="video/mp4" />}
+                {(film.videoSrc ?? video.videoSrc) && <source src={film.videoSrc ?? video.videoSrc} type="video/mp4" />}
               </video>
             </motion.div>
           </motion.div>

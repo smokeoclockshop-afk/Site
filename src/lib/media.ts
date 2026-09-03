@@ -73,7 +73,8 @@ export const MEDIA: Record<string, MediaSlot> = Object.fromEntries([
 
   // ── Scene 2 — Showcase (video card) ─────────────────────────────
   slot('ph.showcase.poster', '16/9', 'Готування на смокері', 'Постер нарізки: ребра/брискет у диму', 'image'),
-  slot('ph.showcase.video', '16/9', 'Нарізка: що вміє смокер', 'Монтаж 15–25 с: готується → результат → люди смакують', 'video'),
+  slot('ph.showcase.video', '16/9', 'Нарізка: що вміє смокер', 'Фоновий беззвучний луп 20 с із фільму', 'video'),
+  slot('ph.showcase.film', '16/9', 'Фільм «Час диму»', 'Повний монтаж 1:46 зі звуком для лайтбоксу', 'video'),
 
   // ── Scene 3 — Anatomy (layered) ─────────────────────────────────
   slot('ph.anatomy.smokerBody', '3/2', 'Корпус смокера збоку', 'Корпус смокера збоку, темний однорідний фон, зі штатива (для накладання шарів)', 'image'),
@@ -177,8 +178,9 @@ const REAL: Record<string, Partial<MediaSlot>> = {
   'ph.hero.video': { videoSrc: '/media/hero-offset-blur.mp4' },
 
   // showcase — stock, unchanged by request
-  'ph.showcase.poster': { src: '/media/showcase-poster.jpg' },
-  'ph.showcase.video': { videoSrc: '/media/showcase-v2.mp4' }, // trimmed at 15.85 s: the party scene with people is cut
+  'ph.showcase.poster': { src: '/media/showcase-poster-v3.jpg' },
+  'ph.showcase.video': { videoSrc: '/media/showcase-loop-v3.mp4' }, // muted 20 s loop cut from the film
+  'ph.showcase.film': { videoSrc: '/media/showcase-film-v3.mp4' }, // full 1:46 film with music (lightbox)
 
   // recipes (stock food photography until the owner's dish shots arrive)
   'ph.dish.1': { src: '/media/brisket-board.jpg' },

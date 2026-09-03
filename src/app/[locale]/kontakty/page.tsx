@@ -28,7 +28,8 @@ export default async function ContactPage({ params }: Props) {
   setRequestLocale(locale);
   const { contact, order } = getSiteContent(locale);
   const w = site.workshop;
-  const mapsHref = `https://maps.google.com/?q=${encodeURIComponent(`${w.street}, ${w.city}`)}`;
+  const addressLine = [w.street, w.city, w.region].filter(Boolean).join(', ');
+  const mapsHref = `https://maps.google.com/?q=${encodeURIComponent([w.street, w.city].filter(Boolean).join(', '))}`;
 
   return (
     <>
@@ -56,7 +57,7 @@ export default async function ContactPage({ params }: Props) {
                 <li className="flex items-start gap-3">
                   <MapPin className="mt-0.5 size-5 shrink-0 text-ember-500" aria-hidden />
                   <a href={mapsHref} target="_blank" rel="noopener noreferrer" className="hover:text-ember-400">
-                    {w.street}, {w.city}, {w.region}
+                    {addressLine}
                   </a>
                 </li>
                 <li className="flex items-center gap-3">

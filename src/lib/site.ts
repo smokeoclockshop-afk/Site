@@ -47,16 +47,17 @@ export const site = {
   },
   /** Single production workshop. TODO(owner): confirm real address + geo. */
   workshop: {
-    slug: 'kyiv',
+    slug: 'novyi-rozdil',
     name: 'Цех',
-    street: 'вул. Ковальська, 1', // TODO(owner)
-    city: 'Київ', // TODO(owner)
-    region: 'Київська обл.',
-    postalCode: '02000', // TODO(owner)
+    /** No street published — the owner lists the town only. */
+    street: '',
+    city: 'м. Новий Розділ',
+    region: 'Львівська обл.',
+    postalCode: '81652',
     countryCode: 'UA',
     phone: '+380 66 347 12 37',
     phoneHref: '+380663471237',
-    geo: { lat: 50.4501, lng: 30.5234 }, // TODO(owner)
+    geo: { lat: 49.4736, lng: 24.1361 },
   } as Workshop,
   /** Live queue state — updated by hand in this file (no backend). TODO(owner). */
   queue: {

@@ -1457,22 +1457,22 @@
       {
         "id": "grate",
         "label": "Додаткова решітка",
-        "price": 1800
+        "price": 1200
       },
       {
         "id": "shelf",
         "label": "Столик-полиця",
-        "price": 2400
+        "price": 2000
       },
       {
         "id": "cover",
         "label": "Чохол",
-        "price": 1200
+        "price": 3200
       },
       {
         "id": "thermo",
         "label": "Smart-термометр",
-        "price": 4500
+        "price": 2500
       },
       {
         "id": "engrave",

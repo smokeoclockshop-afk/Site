@@ -40,7 +40,7 @@ export function organizationJsonLd() {
     priceRange: site.priceRange,
     address: {
       '@type': 'PostalAddress',
-      streetAddress: w.street,
+      ...(w.street ? { streetAddress: w.street } : {}),
       addressLocality: w.city,
       addressRegion: w.region,
       postalCode: w.postalCode,
