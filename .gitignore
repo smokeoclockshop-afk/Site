@@ -52,3 +52,6 @@ next-env.d.ts
 # (TT Ramillas / Satoshi are commercially licensed — must not be redistributed)
 /public/fonts
 /public/video
+
+# Local Netlify folder
+.netlify
