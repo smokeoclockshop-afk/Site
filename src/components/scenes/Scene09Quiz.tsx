@@ -7,6 +7,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { ArrowLeft, ArrowRight, Check, Flame } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
+import { getSlot } from '@/lib/media';
 import type { SiteContent } from '@/lib/content';
 import { Container } from '@/components/ui/Container';
 import { StampText } from '@/components/shared/StampText';
@@ -182,8 +183,8 @@ export function Scene09Quiz({ data }: { data: Data }) {
       {/* Looped smoker-and-meat montage behind everything */}
       <video
         ref={vidRef}
-        src="/media/showcase.mp4"
-        poster="/media/showcase-poster.jpg"
+        src={getSlot('ph.showcase.video').videoSrc}
+        poster={getSlot('ph.showcase.poster').src}
         muted
         loop
         playsInline

@@ -1,6 +1,8 @@
 import { getPathname } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { absoluteUrl, site } from '@/lib/site';
+import { getSlot } from '@/lib/media';
+import type { SiteContent } from '@/lib/content';
 
 /** Renders a JSON-LD script tag. */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
@@ -82,6 +84,45 @@ export function productJsonLd({
       url: absoluteUrl(getPathname({ locale, href: path })),
       seller: { '@id': `${site.url}/#organization` },
     },
+  };
+}
+
+/** The catalog as an ItemList of Products; offers only where a real price exists. */
+export function productListJsonLd(products: SiteContent['products'], locale: Locale) {
+  const url = absoluteUrl(getPathname({ locale, href: '/vyroby' }));
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: products.title,
+    numberOfItems: products.items.length,
+    itemListElement: products.items.map((p, i) => {
+      const digits = p.price.replace(/[^\d]/g, '');
+      const price = p.onRequest || !digits ? undefined : Number(digits);
+      return {
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Product',
+          name: p.name,
+          description: p.tagline,
+          image: absoluteUrl(getSlot(p.slot).src),
+          url: `${url}?p=${p.slug}`,
+          brand: { '@type': 'Brand', name: site.name },
+          ...(price
+            ? {
+                offers: {
+                  '@type': 'Offer',
+                  priceCurrency: 'UAH',
+                  price,
+                  availability: 'https://schema.org/PreOrder',
+                  url: `${url}?p=${p.slug}`,
+                  seller: { '@id': `${site.url}/#organization` },
+                },
+              }
+            : {}),
+        },
+      };
+    }),
   };
 }
 

@@ -2,11 +2,10 @@
 
 import { useRef, useState } from 'react';
 import { AnimatePresence, motion, useScroll, useMotionValueEvent, useReducedMotion } from 'motion/react';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { getSlot } from '@/lib/media';
 import type { SiteContent } from '@/lib/content';
-import { Slot } from '@/components/ui/Slot';
 import { useMediaQuery } from '@/components/shared/useMediaQuery';
 
 type Data = SiteContent['home']['features'];
@@ -18,8 +17,9 @@ const WIPE = [0.76, 0, 0.24, 1] as const;
  * "Розберемо по швах" — the template's split section carried over as
  * scrollytelling: the left parchment panel (kicker + display heading + the
  * benefits list) pins while you scroll; rows light up one by one (hover gets
- * the same treatment), and the right half swaps a juicy context photo with a
- * curtain-wipe + masked caption lines.
+ * the same treatment), and the right half swaps a juicy context photo — or a
+ * muted clip for slots that carry a video — with a curtain-wipe + masked
+ * caption lines.
  */
 function Heading({ data }: { data: Data }) {
   return (
@@ -111,9 +111,9 @@ function DesktopPinned({ data }: { data: Data }) {
           </ol>
         </div>
 
-        {/* RIGHT — juicy context photo with a curtain-wipe + masked caption */}
+        {/* RIGHT — juicy context photo/clip with a curtain-wipe + masked caption */}
         <div className="relative overflow-hidden bg-roast-900">
-          {/* Image stack: the new photo wipes down over the old one */}
+          {/* Media stack: the new photo wipes down over the old one */}
           <AnimatePresence initial={false}>
             <motion.div
               key={media.src}
@@ -125,14 +125,31 @@ function DesktopPinned({ data }: { data: Data }) {
               exit={{ scale: 1.05, transition: { duration: 0.9, ease: 'easeOut' } }}
               transition={{ duration: 0.75, ease: WIPE }}
             >
-              <motion.img
-                src={media.src}
-                alt={media.alt}
-                initial={{ scale: 1.12 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.2, ease: EASE }}
-                className="h-full w-full object-cover"
-              />
+              {media.videoSrc ? (
+                <motion.video
+                  src={media.videoSrc}
+                  poster={media.src}
+                  aria-label={media.alt}
+                  muted
+                  loop
+                  autoPlay
+                  playsInline
+                  preload="metadata"
+                  initial={{ scale: 1.12 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 1.2, ease: EASE }}
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <motion.img
+                  src={media.src}
+                  alt={media.alt}
+                  initial={{ scale: 1.12 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 1.2, ease: EASE }}
+                  className="h-full w-full object-cover"
+                />
+              )}
             </motion.div>
           </AnimatePresence>
 
@@ -212,26 +229,136 @@ function DesktopPinned({ data }: { data: Data }) {
   );
 }
 
-/** Mobile / reduced-motion: a clean stacked version of the same content. */
-function Stacked({ data }: { data: Data }) {
+/**
+ * Phones / reduced motion: one feature per screen, story-style. The photo (or
+ * clip) fills a stage sized to the viewport, the caption sits on a dark
+ * gradient at the bottom, seven progress segments run along the top. Swipe,
+ * tap the edges, or use the arrows.
+ */
+function MobileStories({ data }: { data: Data }) {
+  const reduce = useReducedMotion();
+  const [[active, dir], setSlide] = useState<[number, 1 | -1]>([0, 1]);
+  const n = data.items.length;
+  const item = data.items[active];
+  const media = getSlot(item.slot);
+  const D = (d: number) => (reduce ? 0 : d);
+  const go = (d: 1 | -1) => setSlide(([i]) => [Math.max(0, Math.min(n - 1, i + d)), d]);
+
   return (
-    <section className="bg-parchment-200 py-16">
+    <section className="bg-parchment-200 py-14">
       <div className="px-5 sm:px-8">
         <Heading data={data} />
       </div>
-      <div className="mt-8 space-y-6 px-5 sm:px-8">
-        {data.items.map((it, i) => (
-          <figure key={it.label} className="relative overflow-hidden">
-            <Slot id={it.slot} className="aspect-[4/3]" />
-            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-roast-900/90 via-roast-900/45 to-transparent p-5 pt-16">
-              <p className="spec text-saffron-300">
-                {String(i + 1).padStart(2, '0')} · {it.label}
-              </p>
-              <h3 className="display mt-1 text-2xl text-parchment-50">{it.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-parchment-100/85">{it.text}</p>
+
+      <div className="mt-6 px-5 sm:px-8">
+        <motion.div
+          role="group"
+          aria-roledescription="слайд"
+          aria-label={`${active + 1} / ${n} · ${item.label}`}
+          className="relative touch-pan-y select-none overflow-hidden rounded-[3px] bg-roast-900"
+          style={{ height: 'min(calc(100dvh - var(--header-h) - 6.5rem), 640px)' }}
+          drag={reduce ? false : 'x'}
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.12}
+          onDragEnd={(_, info) => {
+            if (info.offset.x < -60) go(1);
+            else if (info.offset.x > 60) go(-1);
+          }}
+        >
+          {/* Media, wiping in from the swipe direction */}
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={media.src}
+              className="absolute inset-0"
+              initial={{ clipPath: dir === 1 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }}
+              animate={{ clipPath: 'inset(0 0% 0 0%)' }}
+              exit={{ scale: 1.05, transition: { duration: D(0.8), ease: 'easeOut' } }}
+              transition={{ duration: D(0.6), ease: WIPE }}
+            >
+              {media.videoSrc ? (
+                <video src={media.videoSrc} poster={media.src} muted loop autoPlay playsInline preload="metadata" aria-label={media.alt} className="h-full w-full object-cover" />
+              ) : (
+                <motion.img
+                  src={media.src}
+                  alt={media.alt}
+                  draggable={false}
+                  initial={{ scale: 1.08 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: D(1.1), ease: EASE }}
+                  className="h-full w-full object-cover"
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Story progress */}
+          <div className="absolute inset-x-3 top-3 z-20 flex gap-1" aria-hidden>
+            {data.items.map((_, i) => (
+              <span key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-parchment-50/25">
+                <motion.span
+                  className="block h-full origin-left bg-saffron-400"
+                  initial={false}
+                  animate={{ scaleX: i < active ? 1 : i === active ? 1 : 0 }}
+                  transition={{ duration: i === active ? D(0.5) : 0, ease: EASE }}
+                />
+              </span>
+            ))}
+          </div>
+
+          {/* Tap zones: left third back, right two thirds forward */}
+          <button type="button" aria-label="Попередня перевага" onClick={() => go(-1)} className="absolute inset-y-0 left-0 z-10 w-1/3 cursor-pointer" />
+          <button type="button" aria-label="Наступна перевага" onClick={() => go(1)} className="absolute inset-y-0 right-0 z-10 w-2/3 cursor-pointer" />
+
+          {/* Caption over the bottom gradient */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 bg-gradient-to-t from-roast-900 via-roast-900/70 to-transparent px-5 pb-5 pt-28">
+            <div key={active}>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: D(0.4), ease: EASE, delay: D(0.1) }}
+                className="spec text-saffron-300"
+              >
+                {String(active + 1).padStart(2, '0')} · {item.label}
+              </motion.p>
+              <div className="overflow-hidden">
+                <motion.h3
+                  initial={{ y: '110%' }}
+                  animate={{ y: 0 }}
+                  transition={{ duration: D(0.5), ease: EASE, delay: D(0.15) }}
+                  className="display mt-1.5 text-[1.7rem] leading-tight text-parchment-50"
+                >
+                  {item.title}
+                </motion.h3>
+              </div>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: D(0.45), ease: EASE, delay: D(0.28) }}
+                className="mt-2.5 text-[13.5px] leading-relaxed text-parchment-100/88"
+              >
+                {item.text}
+              </motion.p>
             </div>
-          </figure>
-        ))}
+          </div>
+        </motion.div>
+
+        {/* Controls under the stage */}
+        <div className="mt-3 flex items-center justify-between">
+          <div className="flex gap-2">
+            {([-1, 1] as const).map((d) => (
+              <button
+                key={d}
+                type="button"
+                onClick={() => go(d)}
+                disabled={d === -1 ? active === 0 : active === n - 1}
+                aria-label={d === -1 ? 'Попередня перевага' : 'Наступна перевага'}
+                className="grid size-11 cursor-pointer place-items-center rounded-full border border-onyx/20 text-onyx transition-colors hover:border-saffron-500 hover:bg-saffron-500 disabled:cursor-default disabled:opacity-35"
+              >
+                {d === -1 ? <ChevronLeft className="size-5" aria-hidden /> : <ChevronRight className="size-5" aria-hidden />}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -241,5 +368,5 @@ export function Scene03Features({ data }: { data: Data }) {
   const reduce = useReducedMotion();
   const isDesktop = useMediaQuery('(min-width: 1024px)');
   if (isDesktop && !reduce) return <DesktopPinned data={data} />;
-  return <Stacked data={data} />;
+  return <MobileStories data={data} />;
 }

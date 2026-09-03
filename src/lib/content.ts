@@ -12,25 +12,20 @@ export interface Spec {
   value: string;
 }
 
-export interface Review {
-  name: string;
-  serial: string;
-  stars: number;
-  text: string;
-  /** Placeholder review — rendered with an "example" note until real ones land. */
-  isExample?: boolean;
-}
-
 export interface LadderItem {
   slot: string;
   name: string;
+  /** One-line hook under the name. */
+  tagline?: string;
   specs: string[];
   price: string;
   perMonth?: string;
   cta: string;
   href?: string;
-  /** 'smoker' links to /smoker, 'catalog' opens the order modal, 'custom' too. */
+  /** 'smoker' links to /smoker, 'catalog' deep-links to the product sheet in /vyroby, 'custom' opens the order modal. */
   action: 'smoker' | 'catalog' | 'custom';
+  /** Catalog product slug (used by the 'catalog' action). */
+  slug?: string;
   flagship?: boolean;
 }
 
@@ -58,14 +53,74 @@ export interface EconReceipt {
   total: number;
 }
 
-export interface ProductCard {
-  slot: string;
-  name: string;
-  from: string;
-  badge?: string;
-  action: 'smoker' | 'catalog';
-  slug?: string;
+export interface ProductCategory {
+  slug: string;
+  label: string;
+  /** One line under the group heading. */
+  blurb: string;
 }
+
+/** A catalog product (cover = media slot, extra photos = paths under /public). */
+export interface Product {
+  slug: string;
+  name: string;
+  /** ProductCategory slug. */
+  category: string;
+  /** One-line hook shown on the card. */
+  tagline: string;
+  /** 2–3 sentences for the product sheet. */
+  description: string;
+  /** "What matters" bullets for the product sheet. */
+  bullets: string[];
+  /** Label/value pairs: the first three are shown on the card. */
+  specs: Spec[];
+  /** Human price string ("від 25 000 ₴" or "ціна за запитом"). */
+  price: string;
+  priceNote?: string;
+  /** True when the price is on request (the CTA reads "Дізнатись ціну"). */
+  onRequest?: boolean;
+  badge?: string;
+  /** Cover media slot (4:3 parchment tile). */
+  slot: string;
+  /** Extra gallery photos (paths under /public), cover excluded. */
+  gallery: string[];
+  /** 'smoker' also links to the /smoker page; 'order' opens the order modal. */
+  action: 'smoker' | 'order';
+  /** Wide, featured card at the top of its group. */
+  featured?: boolean;
+}
+
+/** One smoker model on /smoker (the page switches between them). */
+export interface SmokerModel {
+  slug: string;
+  name: string;
+  /** Short name for the switcher tab. */
+  short: string;
+  badge?: string;
+  tagline: string;
+  description: string;
+  forWhom: string;
+  price: string;
+  perMonth?: string;
+  onRequest?: boolean;
+  status?: string;
+  cta: string;
+  /** Show the add-on configurator (only models with a fixed base price). */
+  configurator?: boolean;
+  /** Cover media slot (4:3 parchment tile). */
+  cover: string;
+  /** Gallery paths under /public (cover first). */
+  gallery: string[];
+  specs: Spec[];
+  highlights: string[];
+}
+
+/** Animated mini-scene inside a "Для бізнесу" benefit tile. */
+export type BenefitScene =
+  | { type: 'receipt'; title: string; lines: { label: string; value: string }[]; note: string }
+  | { type: 'gauge'; from: string; to: string; marks: string[]; count: number; countLabel: string }
+  | { type: 'social'; chips: { icon: 'camera' | 'heart' | 'pin' | 'users'; text: string }[] }
+  | { type: 'checklist'; items: string[] };
 
 export interface Faq {
   q: string;
@@ -83,6 +138,8 @@ export interface SiteContent {
       tempEnd: number;
       nowInShop: string;
       readyCaption: string;
+      /** Label of the scroll-down capsule. */
+      scrollHint: string;
     };
     showcase: {
       title: string;
@@ -96,7 +153,18 @@ export interface SiteContent {
       hint: string;
       items: { slot: string; label: string; title: string; text: string }[];
     };
-    ladder: { kicker: string; title: string; items: LadderItem[] };
+    ladder: {
+      kicker: string;
+      title: string;
+      lead: string;
+      items: LadderItem[];
+      /** End card of the conveyor: link to the full catalog + custom pitch. */
+      allCta: string;
+      allNote: string;
+      customTitle: string;
+      customText: string;
+      customCta: string;
+    };
     process: { kicker: string; title: string; intro: string; steps: ProcessStep[] };
     dishes: {
       kicker: string;
@@ -143,7 +211,6 @@ export interface SiteContent {
       note: string;
       plate: string;
     };
-    reviews: { kicker: string; title: string; items: Review[]; moreCta: string; exampleNote: string };
     economics: {
       kicker: string;
       title: string;
@@ -154,7 +221,7 @@ export interface SiteContent {
       stampPercent: string;
       stampPercentLabel: string;
       dishTitle: string;
-      dishes: { slot: string; name: string; out: string; home: string; factor: string }[];
+      dishes: { slot: string; icon: 'ribs' | 'brisket' | 'pork' | 'wings'; name: string; out: string; home: string; factor: string }[];
       monthly: {
         title: string;
         out: { value: number; label: string };
@@ -188,7 +255,7 @@ export interface SiteContent {
       successBody: string;
     };
     breathers: string[];
-    b2bTeaser: { text: string; cta: string };
+    b2bTeaser: { kicker: string; text: string; cta: string };
     recipes: {
       kicker: string;
       title: string;
@@ -202,26 +269,58 @@ export interface SiteContent {
     kicker: string;
     title: string;
     intro: string;
-    tabs: { slug: string; label: string }[];
-    filterLabel: string;
-    items: (ProductCard & { tab: string })[];
+    /** Trust line under the intro ("Сталь 4 мм · Довічна гарантія · …"). */
+    note: string;
+    allLabel: string;
+    /** Ukrainian plural forms for the item counter: ["виріб", "вироби", "виробів"]. */
+    countForms: [string, string, string];
+    categories: ProductCategory[];
+    items: Product[];
+    /** "Didn't find yours?" custom-work plate at the end of the catalog. */
+    custom: { kicker: string; title: string; text: string; cta: string };
+    /** Product sheet (modal) microcopy. */
+    sheet: {
+      close: string;
+      specs: string;
+      includes: string;
+      order: string;
+      askPrice: string;
+      details: string;
+      leadTime: string;
+      smokerPage: string;
+      prev: string;
+      next: string;
+      photo: string;
+    };
     seoText: string;
   };
   smoker: {
-    name: string;
-    tagline: string;
-    price: string;
-    perMonth: string;
-    status: string;
-    cta: string;
-    galleryCount: number;
-    options: { id: string; label: string; price: number }[];
+    kicker: string;
+    title: string;
+    intro: string;
+    switcherLabel: string;
+    models: SmokerModel[];
     optionsTitle: string;
+    /** Shown instead of the configurator for models priced on request. */
+    optionsNote: string;
     summaryLabel: string;
-    specs: Spec[];
-    specsTitle: string;
+    options: { id: string; label: string; price: number }[];
+    /** Interactive hotspots over the flagship render. */
+    anatomy: {
+      kicker: string;
+      title: string;
+      /** Same call to action, phrased for touch screens. */
+      titleTouch: string;
+      lead: string;
+      hotspots: { x: number; y: number; label: string; text: string }[];
+    };
+    /** Silhouette lineup of the four body shapes; `items` follow the `models` order. */
+    design: { kicker: string; title: string; lead: string; pickCta: string; selectedLabel: string; items: { slug: string; note: string; detail: string }[] };
+    /** Draggable strip of real-life photos. */
+    work: { kicker: string; title: string; lead: string; dragHint: string; items: { src: string; alt: string; caption: string }[] };
     cookedTitle: string;
-    cooked: { slot: string; title: string; href: string }[];
+    cookedCta: string;
+    cooked: { img: string; title: string; note: string }[];
     faqTitle: string;
     faq: Faq[];
     crossSellTitle: string;
@@ -229,6 +328,7 @@ export interface SiteContent {
     warranty: string;
     finalTitle: string;
     finalCta: string;
+    labels: { prev: string; next: string; close: string; open: string; specs: string; forWhom: string; highlights: string; photos: string };
   };
   master: {
     kicker: string;
@@ -236,17 +336,49 @@ export interface SiteContent {
     milestones: { year: string; fact: string }[];
     story: string[];
     counters: Spec[];
+    /** "In the workshop" photo block: panorama + welding strip. */
+    workshop: {
+      title: string;
+      lead: string;
+      panoramaCaption: string;
+      photos: { slot: string; caption: string }[];
+    };
     signTitle: string;
     signText: string;
+    /** Caption under the ambient workshop video. */
+    videoCaption: string;
     stamp: string;
     cta: string;
   };
+  /** "Для бізнесу" — hero, benefits, offer, lead form. */
   b2b: {
     kicker: string;
     title: string;
-    intro: string;
-    packages: { slot: string; name: string; includes: string[]; term: string; cta: string }[];
+    lead: string;
+    cta1: string;
+    cta2: string;
+    heroStats: { value: string; label: string }[];
+    benefits: {
+      kicker: string;
+      title: string;
+      lead: string;
+      items: { title: string; text: string; stat: string; statLabel: string; points: string[]; img: string; alt: string; scene: BenefitScene }[];
+    };
+    offer: {
+      kicker: string;
+      title: string;
+      lead: string;
+      /** Engraved-plate text. */
+      stamp: string;
+      items: { title: string; text: string }[];
+      why: { title: string; text: string }[];
+      formats: { name: string; text: string; term: string }[];
+      cta: string;
+    };
+    formKicker: string;
     formTitle: string;
+    formLead: string;
+    formSteps: string[];
     formCompany: string;
     formTask: string;
     formBudget: string;
@@ -283,7 +415,6 @@ export interface SiteContent {
   common: {
     orderCta: string;
     madeInUa: string;
-    charityLine: string;
     installmentLine: string;
     deliveryLine: string;
     ownWorkshop: string;

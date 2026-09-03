@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { getSlot, isRealMedia } from '@/lib/media';
 import type { SiteContent } from '@/lib/content';
 import { MotionNumber } from '@/components/shared/MotionNumber';
+import { ScrollHint } from '@/components/ui/ScrollHint';
 import { track } from '@/lib/analytics';
 
 /* eslint-disable @next/next/no-img-element */
@@ -70,6 +71,7 @@ export function Scene01Hero({ data }: { data: Data }) {
   const blurPx = useTransform(scrollYProgress, [0.75, 1], [0, 6]);
   const titleFilter = useMotionTemplate`blur(${blurPx}px)`;
   const readyOpacity = useTransform(scrollYProgress, [0.8, 0.95], [0, 1]);
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   useMotionValueEvent(scrollYProgress, 'change', (p) => {
     const step = p < 0.62 ? 0 : p < 0.67 ? 1 : p < 0.72 ? 2 : 3;
@@ -122,34 +124,47 @@ export function Scene01Hero({ data }: { data: Data }) {
     </>
   );
 
+  /* Phones get a vertical list with saffron dots; wider screens keep the inline line. */
   const Utp = (
-    <p className="spec mt-6 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-parchment-100/85">
+    <ul className="spec mt-6 flex flex-col items-center gap-2 text-parchment-100/85 sm:flex-row sm:flex-wrap sm:justify-center sm:gap-x-3 sm:gap-y-1">
       {data.utp.map((part, i) => (
-        <span key={part} className="flex items-center gap-3">
-          {i > 0 && <span className="text-saffron-400/70">·</span>}
+        <li key={part} className="flex items-center gap-2.5 sm:gap-3">
+          <span className="size-1.5 rounded-full bg-saffron-400 sm:hidden" aria-hidden />
+          {i > 0 && <span className="hidden text-saffron-400/70 sm:inline">·</span>}
           <span className={cn('transition-colors duration-300', hi > i && 'text-saffron-300')}>{part}</span>
-        </span>
+        </li>
       ))}
-    </p>
+    </ul>
   );
 
   const Ctas = (
-    <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+    <div className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center">
       <Link
         href="/smoker"
         onClick={() => track('cta_hero_click', { which: 'primary' })}
-        className="inline-flex items-center rounded-[2px] bg-saffron-500 px-7 py-3.5 text-sm font-semibold text-onyx transition-colors hover:bg-saffron-600"
+        className="inline-flex items-center justify-center rounded-[2px] bg-saffron-500 px-7 py-3.5 text-sm font-semibold text-onyx transition-colors hover:bg-saffron-600"
       >
         {data.cta1}
       </Link>
       <a
         href="#process"
         onClick={() => track('cta_hero_click', { which: 'process' })}
-        className="inline-flex items-center rounded-[2px] border border-parchment-50/40 px-7 py-3.5 text-sm font-semibold text-parchment-50 transition-colors hover:bg-parchment-50 hover:text-onyx"
+        className="inline-flex items-center justify-center rounded-[2px] border border-parchment-50/40 px-7 py-3.5 text-sm font-semibold text-parchment-50 transition-colors hover:bg-parchment-50 hover:text-onyx"
       >
         {data.cta2}
       </a>
     </div>
+  );
+
+  /* Phones: the workshop status as a small live pill above the title. */
+  const Pill = (
+    <span className="spec mb-5 inline-flex items-center gap-2 rounded-full border border-parchment-50/20 bg-roast-900/45 px-3 py-1.5 text-[11px] text-parchment-100/85 backdrop-blur-sm sm:hidden">
+      <span aria-hidden className="relative flex size-1.5">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-saffron-400 opacity-70" />
+        <span className="relative inline-flex size-1.5 rounded-full bg-saffron-400" />
+      </span>
+      {data.nowInShop}
+    </span>
   );
 
   // Reduced-motion / static branch — one screen, no pin.
@@ -157,7 +172,8 @@ export function Scene01Hero({ data }: { data: Data }) {
     return (
       <section ref={ref} data-dark-bg className="relative flex min-h-dvh items-center justify-center overflow-hidden text-center">
         {Background}
-        <div className="relative z-10 px-6">
+        <div className="relative z-10 flex flex-col items-center px-6">
+          {Pill}
           <h1 className="display text-parchment-50 text-[clamp(3.5rem,11vw,9.5rem)]">{data.title}</h1>
           {Utp}
           {Ctas}
@@ -177,17 +193,22 @@ export function Scene01Hero({ data }: { data: Data }) {
         </div>
 
         <motion.div
-          className="relative z-10 px-6"
+          className="relative z-10 flex w-full max-w-xl flex-col items-center px-6 sm:max-w-none"
           style={{ y: titleY, opacity: titleOpacity, filter: titleFilter }}
         >
+          {Pill}
           <h1 className="display text-parchment-50 text-[clamp(3rem,11vw,9.5rem)]">{data.title}</h1>
           {Utp}
           {Ctas}
         </motion.div>
 
+        {/* Scroll hint fades as the temperature starts climbing */}
+        <motion.div style={{ opacity: hintOpacity }} className="absolute bottom-6 left-1/2 z-10 -translate-x-1/2 sm:bottom-8">
+          <ScrollHint label={data.scrollHint} />
+        </motion.div>
         <motion.p
           style={{ opacity: readyOpacity }}
-          className="spec absolute bottom-8 left-1/2 z-10 -translate-x-1/2 text-parchment-100/55"
+          className="spec absolute bottom-8 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap text-parchment-100/55"
         >
           {data.readyCaption} ↓
         </motion.p>

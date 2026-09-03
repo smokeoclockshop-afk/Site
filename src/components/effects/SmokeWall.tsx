@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { cn } from '@/lib/utils';
 
 /**
  * Volumetric smoke wall for the product conveyor: a self-contained canvas
@@ -103,11 +104,24 @@ interface Billow {
   edge: number;
 }
 
-export function SmokeWall() {
+export function SmokeWall({
+  edge = 'right',
+  className,
+  density = 1,
+  sizeScale = 1,
+}: {
+  edge?: 'right' | 'top';
+  className?: string;
+  /** Spawn-rate multiplier (0–1): phones use ~0.4. */
+  density?: number;
+  /** Puff size multiplier: phones use ~0.55. */
+  sizeScale?: number;
+} = {}) {
   const backRef = useRef<HTMLCanvasElement>(null);
   const frontRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
+    const top = edge === 'top';
     const back = backRef.current;
     const front = frontRef.current;
     if (!back || !front) return;
@@ -143,6 +157,27 @@ export function SmokeWall() {
          the deeper a puff is born, the deeper it is allowed to live — so real
          clumps hang over the next section instead of stopping at one line. */
       const r = Math.random();
+      if (top) {
+        /* Ceiling bank: born along the top band, drifting sideways, hugging
+           the edge; the personal death-depth staggers the ragged bottom. */
+        ps.push({
+          x: W * (-0.15 + Math.random() * 1.3),
+          y: H * (-0.06 + Math.pow(r, 0.9) * 0.5),
+          vx: (Math.random() - 0.5) * 14,
+          vy: -(0.5 + Math.random() * 2.5),
+          size0: 60 + Math.random() * 70,
+          size1: 190 + Math.random() * 160,
+          rot: Math.random() * Math.PI * 2,
+          rotV: (Math.random() - 0.5) * 0.22,
+          age: 0,
+          life: 5 + Math.random() * 5,
+          a0: 0.16 + Math.random() * 0.2,
+          depth: Math.random(),
+          sp: pickSprite(),
+          edge: r,
+        });
+        return;
+      }
       ps.push({
         x: W * (0.68 + Math.random() * 0.44),
         y: H * (0.18 + Math.pow(r, 0.8) * 0.62),
@@ -163,7 +198,7 @@ export function SmokeWall() {
 
     const sim = (dt: number) => {
       t += dt;
-      acc += dt * 30;
+      acc += dt * 30 * density;
       while (acc >= 1) {
         spawn();
         acc -= 1;
@@ -181,9 +216,11 @@ export function SmokeWall() {
           Math.sin(p.x * 0.0021 - t * 0.3) +
           Math.cos((p.x + p.y) * 0.0013 + t * 0.18);
         p.vx += (Math.cos(ang) * 9 - p.vx * 0.5) * dt;
-        p.vy += (Math.sin(ang) * 9 - 4 - p.vy * 0.5) * dt;
+        /* The ceiling bank has no rising draft — it hangs and tumbles. */
+        p.vy += (Math.sin(ang) * (top ? 5 : 9) - (top ? 0.6 : 4) - p.vy * 0.5) * dt;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
+        if (top && p.y < -H * 0.12) p.y = -H * 0.12;
         p.rot += p.rotV * dt;
       }
     };
@@ -198,19 +235,28 @@ export function SmokeWall() {
            (smoke never touches the fixed header or the block above), ramping in
            under the heading, and a LONG bottom fade far below the section edge
            so the wall drains downward with no straight cut line. */
-        const xa = Math.min(1, Math.max(0, (p.x / W - 0.4) / 0.22));
-        const yaTop = Math.min(1, Math.max(0, (p.y / H - 0.075) / 0.18));
-        /* Per-particle death depth staggered from the section edge down to
-           ~38vh below it: some clumps fully hang over the next block, and no
-           two share a cut line. Smoothstepped — no linear knee. */
-        const cut = H * (0.76 + 0.2 * p.edge);
-        const tBot = Math.min(1, Math.max(0, (cut - p.y) / (H * 0.07)));
-        const yaBot = tBot * tBot * (3 - 2 * tBot);
-        const alpha = p.a0 * env * xa * yaTop * yaBot;
+        let alpha: number;
+        if (top) {
+          /* Ceiling bank: full strength at the edge, a staggered smoothstep
+             fade between 40% and 95% of the canvas — a ragged hem, no line. */
+          const cut = H * (0.4 + 0.55 * p.edge);
+          const tBot = Math.min(1, Math.max(0, (cut - p.y) / (H * 0.16)));
+          alpha = p.a0 * env * (tBot * tBot * (3 - 2 * tBot));
+        } else {
+          const xa = Math.min(1, Math.max(0, (p.x / W - 0.4) / 0.22));
+          const yaTop = Math.min(1, Math.max(0, (p.y / H - 0.075) / 0.18));
+          /* Per-particle death depth staggered from the section edge down to
+             ~38vh below it: some clumps fully hang over the next block, and no
+             two share a cut line. Smoothstepped — no linear knee. */
+          const cut = H * (0.76 + 0.2 * p.edge);
+          const tBot = Math.min(1, Math.max(0, (cut - p.y) / (H * 0.07)));
+          const yaBot = tBot * tBot * (3 - 2 * tBot);
+          alpha = p.a0 * env * xa * yaTop * yaBot;
+        }
         if (alpha <= 0.004) continue;
         const front_ = p.depth > 0.68;
         const ctx = front_ ? fctx : bctx;
-        const size = p.size0 + (p.size1 - p.size0) * u;
+        const size = (p.size0 + (p.size1 - p.size0) * u) * sizeScale;
         ctx.globalAlpha = front_ ? alpha * 0.7 : alpha;
         ctx.save();
         ctx.translate(p.x, p.y);
@@ -276,7 +322,17 @@ export function SmokeWall() {
       document.removeEventListener('visibilitychange', onVis);
       window.removeEventListener('resize', fit);
     };
-  }, []);
+  }, [edge, density, sizeScale]);
+
+  if (edge === 'top') {
+    /* Ceiling bank: both layers fill the (explicitly sized) parent. */
+    return (
+      <>
+        <canvas ref={backRef} aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 h-full w-full', className)} />
+        <canvas ref={frontRef} aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 h-full w-full', className)} />
+      </>
+    );
+  }
 
   /* The canvases start AT the section top (smoke never climbs onto the block
      above) but overhang far below it, so the wall drains downward onto the
@@ -284,8 +340,8 @@ export function SmokeWall() {
      top/bottom inset pair does NOT stretch it, so the height must be explicit. */
   return (
     <>
-      <canvas ref={backRef} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+44vh)] w-full" />
-      <canvas ref={frontRef} aria-hidden className="pointer-events-none absolute inset-x-0 top-0 z-20 h-[calc(100%+44vh)] w-full" />
+      <canvas ref={backRef} aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 z-0 h-[calc(100%+44vh)] w-full', className)} />
+      <canvas ref={frontRef} aria-hidden className={cn('pointer-events-none absolute inset-x-0 top-0 z-20 h-[calc(100%+44vh)] w-full', className)} />
     </>
   );
 }

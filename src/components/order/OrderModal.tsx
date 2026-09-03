@@ -13,8 +13,8 @@ import { useOrder } from './OrderModalContext';
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
 const field =
-  'w-full rounded-[2px] border border-[color:rgb(44_44_44/0.16)] bg-coal-950 px-4 py-3 text-smoke-50 placeholder:text-ash-500 transition-colors focus:border-ember-500';
-const label = 'mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-ash-500';
+  'w-full rounded-[2px] border border-[color:rgb(44_44_44/0.16)] bg-coal-950 px-3.5 py-2.5 text-smoke-50 placeholder:text-ash-500 transition-colors focus:border-ember-500';
+const label = 'mb-1 block text-[11px] font-medium uppercase tracking-[0.14em] text-ash-500';
 
 export function OrderModal() {
   const { isOpen, close, source, payload, content } = useOrder();
@@ -100,7 +100,8 @@ export function OrderModal() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.99 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="grain relative z-10 max-h-[92dvh] w-full max-w-lg overflow-y-auto border-t border-[color:rgb(44_44_44/0.14)] bg-coal-800 p-6 sm:border sm:p-8"
+            data-lenis-prevent
+            className="grain relative z-10 max-h-[94dvh] w-full max-w-lg overflow-y-auto overscroll-contain border-t border-[color:rgb(44_44_44/0.14)] bg-coal-800 p-5 sm:border sm:p-6"
           >
             <button
               onClick={close}
@@ -118,20 +119,19 @@ export function OrderModal() {
               </div>
             ) : (
               <div className="relative z-10">
-                <p className="kicker">{content.title}</p>
-                <h2 className="display mt-2 text-2xl text-smoke-50 sm:text-3xl">{content.subtitle}</h2>
+                <h2 className="display pr-10 text-[1.6rem] leading-tight text-smoke-50 sm:text-3xl">{content.title}</h2>
+                <p className="mt-1.5 text-sm leading-relaxed text-smoke-300">{content.subtitle}</p>
 
-                {payload.product && (
-                  <p className="spec mt-3 text-ember-400">{payload.product}</p>
-                )}
-                {payload.config && payload.config.length > 0 && (
-                  <p className="spec mt-2 text-smoke-300">+ {payload.config.join(' · ')}</p>
-                )}
-                {payload.result && (
-                  <p className="spec mt-2 text-ember-400">→ {payload.result}</p>
+                {(payload.product || payload.result || (payload.config && payload.config.length > 0)) && (
+                  <p className="spec mt-2.5 text-ember-400">
+                    {payload.product}
+                    {payload.result && <> → {payload.result}</>}
+                    {payload.config && payload.config.length > 0 && <span className="text-smoke-300"> + {payload.config.join(' · ')}</span>}
+                  </p>
                 )}
 
-                <form onSubmit={onSubmit} className="mt-6 space-y-4" noValidate>
+                <form onSubmit={onSubmit} className="mt-4 space-y-3" noValidate>
+                  <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <label htmlFor="o-name" className={label}>{content.name}</label>
                     <input ref={nameRef} id="o-name" name="name" required autoComplete="name" className={field} />
@@ -156,17 +156,18 @@ export function OrderModal() {
                       </p>
                     )}
                   </div>
+                  </div>
                   <div>
                     <label htmlFor="o-comment" className={label}>{content.comment}</label>
-                    <textarea id="o-comment" name="comment" rows={2} className={cn(field, 'resize-y')} />
+                    <textarea id="o-comment" name="comment" rows={2} className={cn(field, 'min-h-[2.75rem] resize-y py-2')} />
                   </div>
-                  <fieldset>
-                    <legend className={label}>{content.channelLabel}</legend>
+                  <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                    <legend className={cn(label, 'float-left mb-0 mr-1')}>{content.channelLabel}</legend>
                     <div className="flex flex-wrap gap-2">
                       {content.channels.map((ch, i) => (
                         <label
                           key={ch}
-                          className="inline-flex cursor-pointer items-center gap-2 border border-[color:rgb(44_44_44/0.16)] px-3 py-2 text-sm text-smoke-300 transition-colors has-[:checked]:border-ember-500 has-[:checked]:text-smoke-50"
+                          className="inline-flex cursor-pointer items-center gap-2 border border-[color:rgb(44_44_44/0.16)] px-3 py-1.5 text-sm text-smoke-300 transition-colors has-[:checked]:border-ember-500 has-[:checked]:text-smoke-50"
                         >
                           <input type="radio" name="channel" value={ch} defaultChecked={i === 0} className="accent-ember-500" />
                           {ch}
@@ -178,7 +179,7 @@ export function OrderModal() {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="cta-glow w-full cursor-pointer rounded-[2px] bg-ember-500 py-3.5 text-sm font-semibold text-onyx transition-colors hover:bg-ember-600 disabled:opacity-60"
+                    className="cta-glow w-full cursor-pointer rounded-[2px] bg-ember-500 py-3 text-sm font-semibold text-onyx transition-colors hover:bg-ember-600 disabled:opacity-60"
                   >
                     {status === 'sending' ? content.sending : content.submit}
                   </button>
@@ -187,9 +188,9 @@ export function OrderModal() {
                   )}
                 </form>
 
-                <div className="relative z-10 mt-6 border-t border-[color:rgb(44_44_44/0.12)] pt-5">
-                  <p className="spec mb-3 text-ash-500">{content.orWrite}</p>
-                  <MessengerRow place="order-modal" />
+                <div className="relative z-10 mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-[color:rgb(44_44_44/0.12)] pt-4">
+                  <p className="spec text-ash-500">{content.orWrite}</p>
+                  <MessengerRow place="order-modal" compact />
                 </div>
               </div>
             )}

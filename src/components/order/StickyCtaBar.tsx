@@ -21,6 +21,7 @@ export function StickyCtaBar({
 }) {
   const { open, isOpen } = useOrder();
   const [show, setShow] = useState(false);
+  const [footerIn, setFooterIn] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setShow(window.scrollY > threshold);
@@ -29,9 +30,18 @@ export function StickyCtaBar({
     return () => window.removeEventListener('scroll', onScroll);
   }, [threshold]);
 
+  // Never cover the footer links: hide while any part of the footer is on screen.
+  useEffect(() => {
+    const footer = document.querySelector('footer');
+    if (!footer) return;
+    const io = new IntersectionObserver(([e]) => setFooterIn(e.isIntersecting), { threshold: 0 });
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
+
   return (
     <AnimatePresence>
-      {show && !isOpen && (
+      {show && !isOpen && !footerIn && (
         <motion.div
           initial={{ y: '100%' }}
           animate={{ y: 0 }}

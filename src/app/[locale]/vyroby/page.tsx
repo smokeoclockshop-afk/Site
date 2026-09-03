@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { routing, type Locale } from '@/i18n/routing';
 import { pageMetadata } from '@/lib/seo';
 import { getSiteContent } from '@/lib/content';
-import { JsonLd, breadcrumbJsonLd } from '@/components/seo/JsonLd';
+import { JsonLd, breadcrumbJsonLd, productListJsonLd } from '@/components/seo/JsonLd';
 import { CatalogView } from '@/components/catalog/CatalogView';
 
 type Props = { params: Promise<{ locale: Locale }> };
@@ -26,6 +26,7 @@ export default async function ProductsPage({ params }: Props) {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd(locale, [{ name: 'Головна', path: '/' }, { name: products.title, path: '/vyroby' }])} />
+      <JsonLd data={productListJsonLd(products, locale)} />
       <CatalogView data={products} />
     </>
   );

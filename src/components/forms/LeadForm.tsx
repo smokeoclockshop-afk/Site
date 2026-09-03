@@ -11,8 +11,8 @@ import { triggerBurst } from '@/components/effects/burst';
 type Status = 'idle' | 'sending' | 'success' | 'error';
 
 const field =
-  'w-full rounded-[2px] border border-[color:rgb(44_44_44/0.16)] bg-coal-800 px-4 py-3 text-smoke-50 placeholder:text-ash-500 transition-colors focus:border-ember-500';
-const label = 'mb-1.5 block text-xs font-medium uppercase tracking-[0.14em] text-ash-500';
+  'w-full rounded-[2px] border border-[color:rgb(44_44_44/0.16)] bg-coal-800 px-3.5 py-2.5 text-smoke-50 placeholder:text-ash-500 transition-colors focus:border-ember-500';
+const label = 'mb-1 block text-[11px] font-medium uppercase tracking-[0.14em] text-ash-500';
 
 /** Lead form used on /kontakty (order labels) and /b2b (with company/task/budget). */
 export function LeadForm({
@@ -71,28 +71,9 @@ export function LeadForm({
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      {b2b && (
-        <>
-          <div>
-            <label htmlFor="company" className={label}>{b2b.formCompany}</label>
-            <input id="company" name="company" required className={field} />
-          </div>
-          <div>
-            <label htmlFor="task" className={label}>{b2b.formTask}</label>
-            <textarea id="task" name="task" rows={3} required className={cn(field, 'resize-y')} />
-          </div>
-          <div>
-            <label htmlFor="budget" className={label}>{b2b.formBudget}</label>
-            <select id="budget" name="budget" className={field}>
-              {b2b.budgets.map((bd) => (
-                <option key={bd}>{bd}</option>
-              ))}
-            </select>
-          </div>
-        </>
-      )}
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form onSubmit={onSubmit} className="space-y-3" noValidate>
+      {/* Name + phone share a row even on phones — short labels, short answers */}
+      <div className="grid grid-cols-2 gap-3">
         <div>
           <label htmlFor="name" className={label}>{order.name}</label>
           <input id="name" name="name" required autoComplete="name" className={field} />
@@ -103,24 +84,43 @@ export function LeadForm({
           {phoneErr && <p role="alert" aria-live="polite" className="mt-1 text-xs text-ember-400">{order.phoneError}</p>}
         </div>
       </div>
-      {!b2b && (
+      {b2b ? (
+        <>
+          <div>
+            <label htmlFor="company" className={label}>{b2b.formCompany}</label>
+            <input id="company" name="company" required className={field} />
+          </div>
+          <div>
+            <label htmlFor="task" className={label}>{b2b.formTask}</label>
+            <textarea id="task" name="task" rows={2} required className={cn(field, 'min-h-[4.5rem] resize-y')} />
+          </div>
+          <div>
+            <label htmlFor="budget" className={label}>{b2b.formBudget}</label>
+            <select id="budget" name="budget" className={field}>
+              {b2b.budgets.map((bd) => (
+                <option key={bd}>{bd}</option>
+              ))}
+            </select>
+          </div>
+        </>
+      ) : (
         <div>
           <label htmlFor="comment" className={label}>{order.comment}</label>
-          <textarea id="comment" name="comment" rows={2} className={cn(field, 'resize-y')} />
+          <textarea id="comment" name="comment" rows={2} className={cn(field, 'min-h-[3.5rem] resize-y')} />
         </div>
       )}
-      <fieldset>
-        <legend className={label}>{order.channelLabel}</legend>
+      <fieldset className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <legend className={cn(label, 'float-left mb-0 mr-1')}>{order.channelLabel}</legend>
         <div className="flex flex-wrap gap-2">
           {order.channels.map((ch, i) => (
-            <label key={ch} className="inline-flex cursor-pointer items-center gap-2 border border-[color:rgb(44_44_44/0.16)] px-3 py-2 text-sm text-smoke-300 has-[:checked]:border-ember-500 has-[:checked]:text-smoke-50">
+            <label key={ch} className="inline-flex cursor-pointer items-center gap-2 border border-[color:rgb(44_44_44/0.16)] px-3 py-1.5 text-sm text-smoke-300 has-[:checked]:border-ember-500 has-[:checked]:text-smoke-50">
               <input type="radio" name="channel" value={ch} defaultChecked={i === 0} className="accent-ember-500" />
               {ch}
             </label>
           ))}
         </div>
       </fieldset>
-      <button type="submit" disabled={status === 'sending'} className="cta-glow cursor-pointer rounded-[2px] bg-ember-500 px-7 py-3.5 text-sm font-semibold text-onyx transition-colors hover:bg-ember-600 disabled:opacity-60">
+      <button type="submit" disabled={status === 'sending'} className="cta-glow w-full cursor-pointer rounded-[2px] bg-ember-500 px-7 py-3 text-sm font-semibold text-onyx transition-colors hover:bg-ember-600 disabled:opacity-60 sm:w-auto">
         {status === 'sending' ? order.sending : b2b ? b2b.submit : order.submit}
       </button>
       {status === 'error' && <p role="alert" className="text-sm text-ember-400">{order.errorText}</p>}

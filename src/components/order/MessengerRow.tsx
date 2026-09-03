@@ -16,11 +16,14 @@ export function MessengerRow({
   place,
   className,
   big = false,
+  compact = false,
   tone = 'light',
 }: {
   place: string;
   className?: string;
   big?: boolean;
+  /** Tight buttons for modals. */
+  compact?: boolean;
   /** 'light' = for light surfaces (dark border/text); 'dark' = for dark surfaces. */
   tone?: 'light' | 'dark';
 }) {
@@ -29,7 +32,7 @@ export function MessengerRow({
       ? 'border-parchment-50/25 text-parchment-100 hover:border-saffron-400 hover:bg-parchment-50/10'
       : 'border-onyx/20 text-onyx hover:border-saffron-500 hover:bg-saffron-500/10';
   return (
-    <div className={cn('flex flex-wrap gap-3', className)} data-no-burst>
+    <div className={cn('flex flex-wrap', compact ? 'gap-2' : 'gap-3', className)} data-no-burst>
       {ITEMS.map(({ key, label, href, Icon }) => (
         <a
           key={key}
@@ -40,7 +43,7 @@ export function MessengerRow({
           className={cn(
             'inline-flex items-center gap-2 border text-sm font-medium transition-colors',
             surface,
-            big ? 'px-5 py-4' : 'px-4 py-3',
+            big ? 'px-5 py-4' : compact ? 'px-3 py-2' : 'px-4 py-3',
           )}
         >
           <Icon className="size-4 text-saffron-500" aria-hidden />

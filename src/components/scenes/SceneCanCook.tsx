@@ -150,7 +150,7 @@ export function SceneCanCook({ data }: { data: Data }) {
           </h2>
           <p className="mt-3 max-w-lg text-sm leading-relaxed text-espresso lg:text-[15px]">{data.lead}</p>
 
-          <ol className="mt-4 divide-y divide-onyx/10">
+          <ol className="mt-4 divide-y divide-onyx/10 max-lg:hidden">
             {data.items.map((it, i) => {
               const on = i === active;
               return (

@@ -4,7 +4,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView, useReducedMotion } from 'motion/react';
-import { Flame } from 'lucide-react';
+import { Beef, Bone, Drumstick, Flame, Sandwich } from 'lucide-react';
 import type { EconReceipt, SiteContent } from '@/lib/content';
 import { cn } from '@/lib/utils';
 import { Container } from '@/components/ui/Container';
@@ -14,6 +14,7 @@ import { useCountUp } from '@/components/shared/useCountUp';
 type Data = SiteContent['home']['economics'];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
+const DISH_ICONS = { ribs: Bone, brisket: Beef, pork: Sandwich, wings: Drumstick } as const;
 
 /** Stable formatter for count-ups: 17 200 instead of 17200. */
 const fmtCount = (n: number) => Math.round(n).toLocaleString('uk-UA');
@@ -135,9 +136,34 @@ export function Scene08Economics({ data }: { data: Data }) {
           </span>
         </div>
 
-        {/* Juicy per-dish comparison */}
+        {/* Juicy per-dish comparison — a compact icon ledger on phones, photo cards wider up */}
         <p className="kicker mt-16 text-center">{data.dishTitle}</p>
-        <div className="mx-auto mt-6 grid max-w-4xl gap-5 sm:grid-cols-3">
+        <ul className="mx-auto mt-6 grid max-w-md gap-2.5 sm:hidden">
+          {data.dishes.map((d, i) => {
+            const Icon = DISH_ICONS[d.icon];
+            return (
+              <motion.li
+                key={d.name}
+                initial={{ opacity: 0, x: -16 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.5 }}
+                transition={{ duration: 0.45, ease: EASE, delay: i * 0.08 }}
+                className="flex items-center gap-3.5 border border-onyx/12 bg-parchment-50 p-3 shadow-[0_16px_36px_-28px_rgb(28_24_20/0.5)]"
+              >
+                <span className="grid size-12 shrink-0 place-items-center rounded-full border border-saffron-500/30 bg-saffron-500/12 text-saffron-600">
+                  <Icon className="size-6" aria-hidden />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="display block text-lg leading-tight text-onyx">{d.name}</span>
+                  <span className="block truncate text-[11px] text-walnut">{d.out}</span>
+                  <span className="block text-[13px] font-semibold text-saffron-600">{d.home}</span>
+                </span>
+                <span className="spec shrink-0 bg-onyx px-2 py-1 text-[10px] text-parchment-50">{d.factor}</span>
+              </motion.li>
+            );
+          })}
+        </ul>
+        <div className="mx-auto mt-6 hidden max-w-5xl gap-5 sm:grid sm:grid-cols-2 lg:grid-cols-4">
           {data.dishes.map((d, i) => (
             <motion.figure
               key={d.name}

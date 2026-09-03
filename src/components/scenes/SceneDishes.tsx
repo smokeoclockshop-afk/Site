@@ -367,7 +367,7 @@ export function SceneDishes({ data }: { data: Data }) {
         {/* RIGHT — parchment panel: heading, dish list, the no-pressure CTA */}
         <div className="flex flex-col justify-center bg-parchment-100 px-5 py-14 sm:px-8 lg:py-6 lg:pt-[calc(var(--header-h)+0.75rem)] lg:pl-12 lg:pr-[max(1.5rem,calc((100vw-1440px)/2+3rem))]">
           <Heading data={data} />
-          <ol className="mt-5 divide-y divide-onyx/12">
+          <ol className="mt-5 divide-y divide-onyx/12 max-lg:hidden">
             {data.items.map((it, i) => {
               const on = i === active;
               return (

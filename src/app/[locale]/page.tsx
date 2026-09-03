@@ -10,7 +10,6 @@ import { SceneDishes } from '@/components/scenes/SceneDishes';
 import { Scene04Ladder } from '@/components/scenes/Scene04Ladder';
 import { Scene05Process } from '@/components/scenes/Scene05Process';
 import { Scene06Queue } from '@/components/scenes/Scene06Queue';
-import { Scene07Reviews } from '@/components/scenes/Scene07Reviews';
 import { Scene08Economics } from '@/components/scenes/Scene08Economics';
 import { Scene09Quiz } from '@/components/scenes/Scene09Quiz';
 import { Scene10FinalCta } from '@/components/scenes/Scene10FinalCta';
@@ -48,7 +47,6 @@ export default async function HomePage({ params }: Props) {
       <Scene05Process data={home.process} />
       <Scene04Ladder data={home.ladder} />
       <Scene06Queue data={home.queue} />
-      <Scene07Reviews data={home.reviews} />
       <Scene08Economics data={home.economics} />
 
       {/* Act III — Дія */}

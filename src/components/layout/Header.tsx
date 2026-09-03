@@ -84,7 +84,7 @@ export function Header() {
     <>
       <header
         className={cn(
-          'fixed inset-x-0 top-0 z-40 border-b transition-[background-color,border-color] duration-500',
+          'fixed inset-x-0 top-0 z-[60] border-b transition-[background-color,border-color] duration-500',
           scrolled || menuOpen
             ? cn(
                 'backdrop-blur-xl backdrop-saturate-150',
@@ -145,7 +145,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="grain fixed inset-0 z-30 bg-coal-950 lg:hidden"
+            className="grain fixed inset-0 z-[55] bg-coal-950 lg:hidden"
           >
             <motion.nav
               aria-label="Mobile"
