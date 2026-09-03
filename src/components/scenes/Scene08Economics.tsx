@@ -297,10 +297,6 @@ export function Scene08Economics({ data }: { data: Data }) {
           </div>
         </Container>
       </div>
-
-      <Container>
-        <p className="mt-6 text-center text-xs text-espresso/55">{data.sourceNote}</p>
-      </Container>
     </section>
   );
 }

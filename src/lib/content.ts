@@ -235,7 +235,6 @@ export interface SiteContent {
         nightsLabel: string;
         payback: string;
       };
-      sourceNote: string;
       cta: string;
       ctaHint: string;
     };

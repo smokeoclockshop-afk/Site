@@ -187,3 +187,12 @@ body {
 }
 
 h1, h2, h3 { text-wrap: balance; }
+
+/* Netlify injects a "Powered by Netlify" badge (an iframe pinned bottom-right)
+   on Free-plan projects; the owner asked for it gone. The proper switch lives
+   in Netlify (Project configuration → General → Powered by Netlify badge);
+   this keeps the page clean regardless. */
+iframe#nl-badge-frame,
+iframe#nl-hud-frame {
+  display: none !important;
+}
