@@ -225,14 +225,16 @@ iframe#nl-hud-frame {
 .edge-on-dark,
 .edge-on-light {
   paint-order: stroke fill;
-  -webkit-text-stroke-width: 1px;
-  text-shadow: none;
+  -webkit-text-stroke-width: 0.7px;
 }
 .edge-on-dark {
-  -webkit-text-stroke-color: rgb(23 20 17 / 0.85);
+  -webkit-text-stroke-color: rgb(23 20 17 / 0.8);
+  /* a whisper of softness so the rim does not read as a hard line */
+  text-shadow: 0 0 1px rgb(23 20 17 / 0.45);
 }
 .edge-on-light {
-  -webkit-text-stroke-color: rgb(255 255 255 / 0.92);
+  -webkit-text-stroke-color: rgb(255 255 255 / 0.9);
+  text-shadow: 0 0 1px rgb(255 255 255 / 0.55);
 }
 @supports not (paint-order: stroke fill) {
   .edge-on-dark,
