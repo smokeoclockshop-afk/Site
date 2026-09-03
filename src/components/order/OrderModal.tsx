@@ -87,7 +87,7 @@ export function OrderModal() {
           transition={{ duration: 0.3 }}
         >
           <button
-            aria-label={content.title}
+            aria-label="Закрити"
             onClick={close}
             className="absolute inset-0 cursor-default bg-roast-900/60 backdrop-blur-sm"
           />
@@ -103,10 +103,12 @@ export function OrderModal() {
             data-lenis-prevent
             className="grain relative z-10 max-h-[94dvh] w-full max-w-lg overflow-y-auto overscroll-contain border-t border-[color:rgb(44_44_44/0.14)] bg-coal-800 p-5 sm:border sm:p-6"
           >
+            {/* z-20: the body below is a `relative z-10` layer (above the grain),
+                so the button must sit above it or clicks land on the heading. */}
             <button
               onClick={close}
-              aria-label={content.title}
-              className="absolute end-4 top-4 grid size-9 cursor-pointer place-items-center text-ash-500 transition-colors hover:text-smoke-50"
+              aria-label="Закрити"
+              className="absolute end-4 top-4 z-20 grid size-9 cursor-pointer place-items-center text-ash-500 transition-colors hover:text-smoke-50"
             >
               <X className="size-5" aria-hidden />
             </button>
