@@ -38,7 +38,7 @@ export const site = {
   /** Messenger contact points. TODO(owner): confirm handles/links. */
   messengers: {
     telegram: 'https://t.me/smokeoclock', // TODO(owner)
-    viber: 'viber://chat?number=%2B380000000000', // TODO(owner)
+    viber: 'viber://chat?number=%2B380663471237',
     instagram: 'https://www.instagram.com/smokeoclock', // TODO(owner)
   },
   social: {
@@ -54,8 +54,8 @@ export const site = {
     region: 'Київська обл.',
     postalCode: '02000', // TODO(owner)
     countryCode: 'UA',
-    phone: '+38 (000) 000-00-00', // TODO(owner)
-    phoneHref: '+380000000000', // TODO(owner)
+    phone: '+380 66 347 12 37',
+    phoneHref: '+380663471237',
     geo: { lat: 50.4501, lng: 30.5234 }, // TODO(owner)
   } as Workshop,
   /** Live queue state — updated by hand in this file (no backend). TODO(owner). */

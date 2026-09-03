@@ -79,6 +79,8 @@ export function Header() {
   const linkColor = dark
     ? 'text-parchment-50/90 hover:text-parchment-50'
     : 'text-espresso hover:text-saffron-600';
+  // Thin halo in the opposite colour so text stays legible over busy photos.
+  const halo = dark ? 'halo-on-dark' : 'halo-on-light';
 
   return (
     <>
@@ -96,7 +98,7 @@ export function Header() {
         )}
       >
         <div className="mx-auto flex h-[var(--header-h)] w-full max-w-[1440px] items-center justify-between gap-4 px-5 sm:px-8 lg:px-12">
-          <Link href="/" aria-label={site.name} className="shrink-0">
+          <Link href="/" aria-label={site.name} className={cn('shrink-0', halo)}>
             <Wordmark tone={tone} />
           </Link>
 
@@ -108,7 +110,7 @@ export function Header() {
                   key={key}
                   href={href}
                   aria-current={active ? 'page' : undefined}
-                  className={cn('relative text-sm transition-colors', linkColor, active && (dark ? 'text-parchment-50' : 'text-onyx'))}
+                  className={cn('relative text-sm transition-colors', halo, linkColor, active && (dark ? 'text-parchment-50' : 'text-onyx'))}
                 >
                   {t(key)}
                   {active && <span aria-hidden className="absolute -bottom-1.5 left-1/2 size-1 -translate-x-1/2 rounded-full bg-saffron-500" />}
@@ -117,7 +119,14 @@ export function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:gap-5">
+            <a
+              href={`tel:${site.workshop.phoneHref}`}
+              dir="ltr"
+              className={cn('spec hidden whitespace-nowrap transition-colors md:block', halo, linkColor)}
+            >
+              {site.workshop.phone}
+            </a>
             <div className="hidden md:block">
               <OrderButton source="header" variant="saffron" className="px-5 py-2.5">
                 {tc('order')}
@@ -128,7 +137,7 @@ export function Header() {
               aria-label={menuOpen ? tc('closeMenu') : tc('openMenu')}
               aria-expanded={menuOpen}
               onClick={() => setMenuOpen((v) => !v)}
-              className={cn('grid size-10 cursor-pointer place-items-center lg:hidden', dark ? 'text-parchment-50' : 'text-onyx')}
+              className={cn('grid size-10 cursor-pointer place-items-center lg:hidden', halo, dark ? 'text-parchment-50' : 'text-onyx')}
             >
               {menuOpen ? <X className="size-6" aria-hidden /> : <MenuIcon className="size-6" aria-hidden />}
             </button>
@@ -181,9 +190,6 @@ export function Header() {
                   {tc('order')}
                 </OrderButton>
                 <MessengerRow place="mobile-menu" />
-                <a href={`tel:${site.workshop.phoneHref}`} className="spec text-smoke-300" dir="ltr">
-                  {site.workshop.phone}
-                </a>
               </motion.div>
             </motion.nav>
           </motion.div>

@@ -1,14 +1,15 @@
 'use client';
 
-import { Send, MessageCircle, AtSign } from 'lucide-react';
+import { Send, MessageCircle, AtSign, Phone } from 'lucide-react';
 import { site } from '@/lib/site';
 import { track } from '@/lib/analytics';
 import { cn } from '@/lib/utils';
 
 const ITEMS = [
-  { key: 'telegram', label: 'Telegram', href: site.messengers.telegram, Icon: Send },
-  { key: 'viber', label: 'Viber', href: site.messengers.viber, Icon: MessageCircle },
-  { key: 'instagram', label: 'Instagram', href: site.messengers.instagram, Icon: AtSign },
+  { key: 'telegram', label: 'Telegram', href: site.messengers.telegram, Icon: Send, external: true },
+  { key: 'viber', label: 'Viber', href: site.messengers.viber, Icon: MessageCircle, external: true },
+  { key: 'instagram', label: 'Instagram', href: site.messengers.instagram, Icon: AtSign, external: true },
+  { key: 'phone', label: site.workshop.phone, href: `tel:${site.workshop.phoneHref}`, Icon: Phone, external: false },
 ] as const;
 
 /** Row of messenger contact buttons. `place` tags the analytics event. */
@@ -33,12 +34,13 @@ export function MessengerRow({
       : 'border-onyx/20 text-onyx hover:border-saffron-500 hover:bg-saffron-500/10';
   return (
     <div className={cn('flex flex-wrap', compact ? 'gap-2' : 'gap-3', className)} data-no-burst>
-      {ITEMS.map(({ key, label, href, Icon }) => (
+      {ITEMS.map(({ key, label, href, Icon, external }) => (
         <a
           key={key}
           href={href}
-          target="_blank"
-          rel="noopener noreferrer"
+          target={external ? '_blank' : undefined}
+          rel={external ? 'noopener noreferrer' : undefined}
+          dir={key === 'phone' ? 'ltr' : undefined}
           onClick={() => track('messenger_click', { channel: key, place })}
           className={cn(
             'inline-flex items-center gap-2 border text-sm font-medium transition-colors',

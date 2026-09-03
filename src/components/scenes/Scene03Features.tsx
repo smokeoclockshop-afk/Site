@@ -173,14 +173,16 @@ function DesktopPinned({ data }: { data: Data }) {
           {/* Caption: gradient + line-masked title and text. Keyed remount (no
               exit queue) so rapid scrolling can never show a stale caption.
               Extra bottom padding keeps the text clear of the scroll badge. */}
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-roast-900/90 via-roast-900/45 to-transparent p-7 pt-24 pb-32 lg:p-10 lg:pt-28 lg:pb-36">
+          {/* Caption on a tall, smooth dark veil: opaque at the foot, fading out well above
+              the title so light photos (steel, sparks) never fight the text. */}
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 p-7 pt-40 pb-32 [background:linear-gradient(to_top,rgb(23_20_17/0.96)_0%,rgb(23_20_17/0.88)_28%,rgb(23_20_17/0.6)_58%,rgb(23_20_17/0.25)_82%,transparent_100%)] lg:p-10 lg:pt-56 lg:pb-36">
             <div key={active}>
               <div className="overflow-hidden">
                 <motion.h3
                   initial={{ y: '112%' }}
                   animate={{ y: '0%' }}
                   transition={{ duration: 0.55, ease: EASE, delay: 0.15 }}
-                  className="display text-parchment-50 text-[clamp(1.5rem,2.2vw,2.2rem)]"
+                  className="display halo-on-dark text-parchment-50 text-[clamp(1.5rem,2.2vw,2.2rem)]"
                 >
                   {item.title}
                 </motion.h3>
@@ -190,7 +192,7 @@ function DesktopPinned({ data }: { data: Data }) {
                   initial={{ y: '60%', opacity: 0 }}
                   animate={{ y: '0%', opacity: 1 }}
                   transition={{ duration: 0.5, ease: EASE, delay: 0.28 }}
-                  className="mt-3 max-w-md leading-relaxed text-parchment-100/85"
+                  className="halo-on-dark mt-3 max-w-md leading-relaxed text-parchment-100/85"
                 >
                   {item.text}
                 </motion.p>
