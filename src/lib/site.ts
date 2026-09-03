@@ -7,7 +7,7 @@
  */
 
 export interface Workshop {
-  slug: 'kyiv';
+  slug: string;
   name: string;
   street: string;
   city: string;
