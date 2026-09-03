@@ -107,14 +107,28 @@ async function sendToTelegram(text: string): Promise<{ ok: boolean; error?: stri
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return { ok: false, error: 'not configured' };
-  const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text, parse_mode: 'HTML', link_preview_options: { is_disabled: true } }),
-    signal: AbortSignal.timeout(10_000),
-  });
+  const post = async (chat_id: string) => {
+    const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id, text, parse_mode: 'HTML', link_preview_options: { is_disabled: true } }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    const body = await res.text().catch(() => '');
+    return { res, body };
+  };
+  let { res, body } = await post(chatId);
+  if (!res.ok) {
+    // Telegram turns a group into a supergroup when settings change, and the
+    // chat id changes with it. Follow the migration so no lead is lost, and
+    // shout in the log so the variable gets updated.
+    const migrated = /"migrate_to_chat_id":\s*(-?\d+)/.exec(body)?.[1];
+    if (migrated) {
+      console.warn(`[lead] chat migrated: set TELEGRAM_CHAT_ID=${migrated} (was ${chatId})`);
+      ({ res, body } = await post(migrated));
+    }
+  }
   if (res.ok) return { ok: true };
-  const body = await res.text().catch(() => '');
   return { ok: false, error: `telegram ${res.status}: ${body.slice(0, 200)}` };
 }
 
